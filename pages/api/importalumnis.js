@@ -20,7 +20,7 @@ export default async function handler(req, res) {
         }
       })
       const prisma = new PrismaClient()
-      const insert = await prisma.alumnis.createMany({
+      const insert = await prisma.alumnis.createMany({ 
         data: data,
         skipDuplicates: true
       })

@@ -1,33 +1,43 @@
 import { prisma } from "../../../libs/prisma.lib";
+import path from "path";
+import multer from "multer";
 
-export default async function handler(req, res) {
-  try {
-    if(req.method === 'POST'){
-      const { namaInstansi, persyaratan, image } = req.body;
-      await prisma.loker.create({
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./public/upload",
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const name = path.basename(file.originalname, ext);
+      cb(null, `${name}-${Date.now()}${ext}`);
+    },
+  }),
+  limits: {
+    fileSize: 10000000, // 1 MB
+  },
+});
+
+export default async (req, res) => {
+  if (req.method === "POST") {
+    upload.single("image")(req, res, async (err) => {
+      if (err) {
+        return res.status(400).json({ error: err.message });
+      }
+      const { nama, persyaratan } = req.body;
+      const image = `/upload/${req.file.filename}`;
+      const product = await prisma.loker.create({
         data: {
-          nama: namaInstansi,
-          persyaratan: persyaratan,
-          image: image
-        }
-      })
-        .then((loker) => {
-          res.status(200).json({
-            message: 'success',
-            data: loker
-          })
-        })
-        .catch((err) => {
-          res.status(500).json({
-            message: err.message
-          })
-        })
-    } else {
-      res.status(400).json({message: 'Bad Request'});
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: error.message
+          nama,
+          persyaratan,
+          image,
+        },
+      });
+      return res.status(200).json(product);
     });
   }
-}
+};

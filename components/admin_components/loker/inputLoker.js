@@ -2,83 +2,52 @@ import Image from "next/image";
 import { useState } from "react";
 import Swal from "sweetalert2";
 export default function InputLoker() {
-  const [namaInstansi, setNamaInstansi] = useState("");
+  const [nama, setNama] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
   const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleProductImgChange = (e) => {
+    setImage(e.target.files[0]);
+  };
+
   // TODO: Add function to add new loker
-  const handleCreateLoker = () => {
-    const inputData = {
-      namaInstansi,
-      persyaratan,
-      image,
-    }
-    fetch("/api/loker", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if(data.status === 200){
-          Swal.fire({
-            title: "Success",
-            text: "Loker berhasil ditambahkan",
-            icon: "success",
-            confirmButtonText: "Ok",
-          });
-        }else{
-          Swal.fire({
-            title: "Error",
-            text: "Loker gagal ditambahkan",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-        }
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error",
-          text: "Loker gagal ditambahkan, cek browser console untuk informati lebih lanjut.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-        console.log(err);
+  const handleCreateLoker = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nama", nama);
+    formData.append("persyaratan", persyaratan);
+    formData.append("image", image);
+    fetch("/api/loker/create", {
+      method: "POST", 
+      body: formData,
+    }) 
+    .then((res) => res.json())
+    .then((res) => {
+      setLoading(false);
+      setNama("");
+      setPersyaratan("")
+      setImage(null);
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil",
+        text: "Loker berhasil ditambahkan",
       });
-  };
-  // TODO: Add function to upload image
-  const handleUploadImage = (e) => {
-    const file = e.target.files[0];
-    let formdata = new FormData();
-    formdata.append("image", file);
-    fetch("/api/loker/imageupload", {
-      method: "POST",
-      body: formdata,
+      // router.push("/admin/loker");
     })
-      .then((res) => res.json())
-      .then((data) => {
-        if(data.status === 201){
-          setImage(data.data);
-        }else{
-          Swal.fire({
-            title: "Error",
-            text: "Upload image gagal",
-            icon: "error",
-            confirmButtonText: "Ok",
-          });
-        }
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error",
-          text: "Upload image gagal, cek browser console untuk informati lebih lanjut.",
-          icon: "error",
-          confirmButtonText: "Ok",
-        });
-        console.log(err);
+    .catch((err) => {
+      console.log(err);
+      setLoading(false);
+      Swal.fire({
+        icon: "error",
+        title: "Gagal",
+        text: "Loker gagal ditambahkan",
       });
-  };
+    });
+};
+
+
+    
   return (
     <>
       <section className="trending-product section">
@@ -110,6 +79,7 @@ export default function InputLoker() {
                         type="file"
                         className="custom-file-input"
                         id="customFile"
+                        onChange={handleProductImgChange}
                       />
                       <label className="custom-file-label" htmlFor="customFile">
                         Choose file
@@ -127,8 +97,8 @@ export default function InputLoker() {
                                 type="text"
                                 className="form-control form-control-sm"
                                 placeholder="Nama Instansi atau Perusahaan"
-                                // value={nameProduct}
-                                // onChange={(e) => setNameProduct(e.target.value)}
+                                value={nama}
+                                onChange={(e) => setNama(e.target.value)}
                               />
                             </div>
                           </div>
@@ -137,9 +107,10 @@ export default function InputLoker() {
                               <label>Persyaratan</label>
                               <textarea
                                 class="form-control"
-                                // value={description}
-                                // onChange={(e) => setDescription(e.target.value)}
                                 placeholder="Masukan Persyaratan Loker"
+                                rows="3"
+                                value={persyaratan}
+                                onChange={(e) => setPersyaratan(e.target.value)}
                               />
                             </div>
                           </div>
@@ -147,7 +118,7 @@ export default function InputLoker() {
                       </div>
                       <div className="mb-2 mt-3">
                         <div className="row float-right">
-                          <button className="btn btn-success">
+                          <button className="btn btn-success" type="submit" onClick={handleCreateLoker}>
                             <i className="fas fa-plus fa-fw"></i> Tambah
                           </button>
                         </div>

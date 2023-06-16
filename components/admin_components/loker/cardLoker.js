@@ -68,7 +68,7 @@ export default function CardLoker() {
                         {lok.persyaratan} s
                       </span>
                       <div className="button">
-                        <a href={`/admin-pages/berkas/id=${lok.id}`} className="btn">
+                        <a href={`/admin-pages/berkas?id=${lok.id}`} className="btn">
                           <i className="lni lni-cart" /> Ajukan Berkas
                         </a>
                       </div>

@@ -1,5 +1,27 @@
 import Image from "next/image";
+import {useState, useEffect } from 'react';
+import {useRouter} from 'next/router'
 export default function UploadBerkas() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const {id} = router.query;
+
+  const handleDetail = async (id) => {
+    try {
+      const res = await fetch(`/api/loker/${id}`);
+      const json = await res.json();
+      setData(json.data);
+      setLoading(false);
+    } catch (error){
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if(id) handleDetail(id);
+  }, [id]);
+
   return (
     <div className="container">
       <div className="row">
@@ -14,7 +36,7 @@ export default function UploadBerkas() {
         <div className="col-lg-4 col-md-4 col-sm-12">
           <div className="product-image">
             <Image
-              src="/dist/img/LogoIndomaret.png"
+              src={data.image}
               className="h-auto w-auto"
               width={300}
               height={300}
@@ -26,11 +48,10 @@ export default function UploadBerkas() {
           <div className="product-info">
             <a href="" type="button" className="btn btn-success">enable</a>
             <a href="" type="button" className="btn btn-secondary">disable</a>
-            <h4>Indomaret</h4><a href="#">[edit]</a>
+            <h4>{data.nama}</h4><a href="#">[edit]</a>
             <p className="text-dark text-bold">Persyaratan</p>
             <span className="category m-2">
-              Rapi <br />
-              jujur <br />
+              {data.persyaratan}
               disiplin <br />
               bertanggung jawab <br />
             </span>

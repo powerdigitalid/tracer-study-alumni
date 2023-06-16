@@ -3,7 +3,7 @@ import { prisma } from "../../../libs/prisma.lib"
 export default async function handler(req, res) {
   if (req.method === 'GET') {
     const { id } = req.query
-    await prisma.loker.findUnique({
+    await prisma.loker.findFirst({
       where: {
         id: parseInt(id),
       }

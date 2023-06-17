@@ -12,8 +12,8 @@ export default function Scripts() {
       <Script defer src="/dist/js/adminlte.js"/>
       {/* <!-- Sparkline --> */}
       <Script defer src="/dist/js/sparkline.js"/>
-      <Script defer src="/dist/js/dropzone.js"/>
-      <Script defer src="/dist/js/multiple-upload.js"/>
+      {/* <Script defer src="/dist/js/dropzone.js"/> */}
+      {/* <Script defer src="/dist/js/multiple-upload.js"/> */}
     </>
   )
 }

@@ -2,52 +2,64 @@ import Image from "next/image";
 import { useState } from "react";
 import Swal from "sweetalert2";
 export default function InputLoker() {
-  const [nama, setNama] = useState("");
+  const [namaInstansi, setNamaInstansi] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
+  const [previmage, setPrevImage] = useState("/dist/img/LogoIndomaret.png");
   const [image, setImage] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  const handleProductImgChange = (e) => {
-    setImage(e.target.files[0]);
+  // TODO: Add function to add new loker
+  const handleCreateLoker = () => {
+    const inputData = {
+      namaInstansi,
+      persyaratan,
+      image,
+    };
+    fetch("/api/loker/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.message === "success") {
+          Swal.fire({
+            title: "Success",
+            text: "Loker berhasil ditambahkan",
+            icon: "success",
+            confirmButtonText: "Ok",
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: "Loker gagal ditambahkan",
+            icon: "error",
+            confirmButtonText: "Ok",
+          });
+        }
+      })
+      .catch((err) => {
+        Swal.fire({
+          title: "Error",
+          text: "Loker gagal ditambahkan, cek browser console untuk informati lebih lanjut.",
+          icon: "error",
+          confirmButtonText: "Ok",
+        });
+        console.log(err);
+      });
+  };
+  const handleImage = (e) => {
+    e.preventDefault();
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    reader.onload = () => {
+      setImage(reader.result);
+      setPrevImage(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
-  // TODO: Add function to add new loker
-  const handleCreateLoker = (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append("nama", nama);
-    formData.append("persyaratan", persyaratan);
-    formData.append("image", image);
-    fetch("/api/loker/create", {
-      method: "POST", 
-      body: formData,
-    }) 
-    .then((res) => res.json())
-    .then((res) => {
-      setLoading(false);
-      setNama("");
-      setPersyaratan("")
-      setImage(null);
-      Swal.fire({
-        icon: "success",
-        title: "Berhasil",
-        text: "Loker berhasil ditambahkan",
-      });
-      // router.push("/admin/loker");
-    })
-    .catch((err) => {
-      console.log(err);
-      setLoading(false);
-      Swal.fire({
-        icon: "error",
-        title: "Gagal",
-        text: "Loker gagal ditambahkan",
-      });
-    });
-};
-
-
-    
   return (
     <>
       <section className="trending-product section">
@@ -67,19 +79,21 @@ export default function InputLoker() {
                   <div className="col-lg-4 col-md-4 col-sm-12">
                     <div className="product-image">
                       <Image
-                        src="/dist/img/LogoIndomaret.png"
+                        src={previmage}
                         className="h-auto w-auto"
                         width={300}
                         height={300}
                         alt="#"
+                        id="loker-image-preview"
                       />
                     </div>
                     <div className="custom-file">
                       <input
                         type="file"
                         className="custom-file-input"
-                        id="customFile"
-                        onChange={handleProductImgChange}
+                        id="source"
+                        name="source"
+                        onChange={(e) => handleImage(e)}
                       />
                       <label className="custom-file-label" htmlFor="customFile">
                         Choose file
@@ -92,25 +106,41 @@ export default function InputLoker() {
                         <div className="form-group">
                           <div className="form-row">
                             <div className="form-group col-12">
-                              <label>Nama Instansi</label>
+                              <label>Nama Loker</label>
                               <input
                                 type="text"
                                 className="form-control form-control-sm"
-                                placeholder="Nama Instansi atau Perusahaan"
-                                value={nama}
-                                onChange={(e) => setNama(e.target.value)}
+                                placeholder="Masukan nama loker bagian misal : admin kantor"
+                                value={namaInstansi}
+                                onChange={(e) =>
+                                  setNamaInstansi(e.target.value)
+                                }
                               />
+                            </div>
+                          </div>
+                          <div className="form-row">
+                            <div className="form-group col-12">
+                              <label>Nama Mitra</label>
+                              <select
+                                className="form-control form-control-sm"
+                              >
+                                <option value="-">
+                                  Pilih...
+                                </option>
+                                <option value="admin">Indomaret</option>
+                                <option value="kabag">Indomaret</option>
+                                <option value="ketua_alumni">Stikom</option>
+                              </select>
                             </div>
                           </div>
                           <div className="form-row">
                             <div className="form-group col-sm-12">
                               <label>Persyaratan</label>
                               <textarea
-                                class="form-control"
-                                placeholder="Masukan Persyaratan Loker"
-                                rows="3"
+                                className="form-control"
                                 value={persyaratan}
                                 onChange={(e) => setPersyaratan(e.target.value)}
+                                placeholder="Masukan Persyaratan Loker"
                               />
                             </div>
                           </div>
@@ -118,7 +148,10 @@ export default function InputLoker() {
                       </div>
                       <div className="mb-2 mt-3">
                         <div className="row float-right">
-                          <button className="btn btn-success" type="submit" onClick={handleCreateLoker}>
+                          <button
+                            className="btn btn-success"
+                            onClick={handleCreateLoker}
+                          >
                             <i className="fas fa-plus fa-fw"></i> Tambah
                           </button>
                         </div>

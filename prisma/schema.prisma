@@ -60,7 +60,7 @@ model Loker {
   id          Int       @id @default(autoincrement())
   nama        String
   persyaratan String
-  image       String?
+  image       String?   @db.Text
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
   lamarans    Lamaran[]

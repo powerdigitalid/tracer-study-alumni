@@ -61,6 +61,7 @@ export default function TambahDataUsers() {
                     <option value="-">Pilih...</option>
                     <option value="admin">Admin</option>
                     <option value="kabag">Kabag</option>
+                    <option value="mitra">Mitra</option>
                     <option value="ketua_alumni">Ketua Alumni</option>
                   </select>
                 </div>

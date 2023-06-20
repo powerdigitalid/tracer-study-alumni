@@ -2,63 +2,67 @@ import Image from "next/image";
 import { useState } from "react";
 import Swal from "sweetalert2";
 export default function InputLoker() {
-  const [namaInstansi, setNamaInstansi] = useState("");
+  const [nama, setNama] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
   const [previmage, setPrevImage] = useState("/dist/img/LogoIndomaret.png");
   const [image, setImage] = useState("");
+  const [loading, setLoading] = useState(false);
+  
+
+  const handleClear = (e) => {
+    e.preventDefault();
+    setNama("");
+    setPersyaratan("");
+    setImage(null);
+    setPrevImage("/dist/img/LogoIndomaret.png");
+  };
   // TODO: Add function to add new loker
-  const handleCreateLoker = () => {
-    const inputData = {
-      namaInstansi,
-      persyaratan,
-      image,
-    };
+  const handleCreateLoker = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("nama", nama);
+    formData.append("persyaratan", persyaratan);
+    formData.append("image", image);
     fetch("/api/loker/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        if (data.message === "success") {
+      method: "POST", 
+      body: formData,
+    }) 
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.message === "success") {
+          setLoading(false);
           Swal.fire({
-            title: "Success",
-            text: "Loker berhasil ditambahkan",
-            icon: "success",
-            confirmButtonText: "Ok",
+              icon: "success",
+              title: "Sukses",
+              text: "Loker berhasil ditambahkan",
           });
-        } else {
+          handleClear(e);
+      } else {
+          setLoading(false);
           Swal.fire({
-            title: "Error",
-            text: "Loker gagal ditambahkan",
-            icon: "error",
-            confirmButtonText: "Ok",
+              icon: "error",
+              title: "Gagal",
+              text: "Loker gagal ditambahkan",
           });
-        }
-      })
-      .catch((err) => {
-        Swal.fire({
-          title: "Error",
-          text: "Loker gagal ditambahkan, cek browser console untuk informati lebih lanjut.",
+      }
+  })
+  .catch((err) => {
+      setLoading(false);
+      Swal.fire({
           icon: "error",
-          confirmButtonText: "Ok",
-        });
-        console.log(err);
+          title: "Gagal",
+          text: "Loker gagal ditambahkan",
       });
+  });
+
   };
   const handleImage = (e) => {
     e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    reader.onload = () => {
-      setImage(reader.result);
-      setPrevImage(reader.result);
-    };
-    reader.readAsDataURL(file);
+    const file = e.target.files[0];
+    setImage(file);
+    setPrevImage(URL.createObjectURL(file));
   };
+
 
   return (
     <>
@@ -111,14 +115,14 @@ export default function InputLoker() {
                                 type="text"
                                 className="form-control form-control-sm"
                                 placeholder="Masukan nama loker bagian misal : admin kantor"
-                                value={namaInstansi}
+                                value={nama}
                                 onChange={(e) =>
-                                  setNamaInstansi(e.target.value)
+                                  setNama(e.target.value)
                                 }
                               />
                             </div>
                           </div>
-                          <div className="form-row">
+                          {/* <div className="form-row">
                             <div className="form-group col-12">
                               <label>Nama Mitra</label>
                               <select
@@ -132,7 +136,7 @@ export default function InputLoker() {
                                 <option value="ketua_alumni">Stikom</option>
                               </select>
                             </div>
-                          </div>
+                          </div> */}
                           <div className="form-row">
                             <div className="form-group col-sm-12">
                               <label>Persyaratan</label>

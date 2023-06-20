@@ -6,7 +6,7 @@ export default async function handler(req, res) {
       const { id } = req.query;
       await prisma.loker.delete({
         where: {
-          id: id
+          id: parseInt(id)
         }
       })
         .then((loker) => {

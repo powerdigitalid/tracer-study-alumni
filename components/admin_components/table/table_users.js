@@ -24,8 +24,7 @@ export default function TableUsers() {
   }
   useEffect(() => {
     fetchUser()
-  }, [])
-  console.log(userdata)
+  }, [userdata])
   return (
     <div className="content">
       <div className="container-fluid">

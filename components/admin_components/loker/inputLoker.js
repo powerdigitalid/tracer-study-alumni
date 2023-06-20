@@ -1,59 +1,76 @@
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
+
 export default function InputLoker() {
   const [nama, setNama] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
   const [previmage, setPrevImage] = useState("/dist/img/LogoIndomaret.png");
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
-  
-
+  const [mitra, setMitra] = useState([]);
+  const [selectedMitra, setSelectedMitra] = useState("-");
+  const handleGetMitra = () => {
+    fetch("/api/user/all?role=mitra", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(res => res.json())
+      .then((res) => {
+        setMitra(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   const handleClear = (e) => {
     e.preventDefault();
     setNama("");
     setPersyaratan("");
+    setSelectedMitra("-");
     setImage(null);
     setPrevImage("/dist/img/LogoIndomaret.png");
   };
-  // TODO: Add function to add new loker
   const handleCreateLoker = (e) => {
     e.preventDefault();
     const formData = new FormData();
     formData.append("nama", nama);
     formData.append("persyaratan", persyaratan);
+    formData.append("mitraId", selectedMitra);
     formData.append("image", image);
     fetch("/api/loker/create", {
-      method: "POST", 
+      method: "POST",
       body: formData,
-    }) 
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.message === "success") {
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.message === "success") {
           setLoading(false);
           Swal.fire({
-              icon: "success",
-              title: "Sukses",
-              text: "Loker berhasil ditambahkan",
+            icon: "success",
+            title: "Sukses",
+            text: "Loker berhasil ditambahkan",
           });
           handleClear(e);
-      } else {
+        } else {
           setLoading(false);
           Swal.fire({
-              icon: "error",
-              title: "Gagal",
-              text: "Loker gagal ditambahkan",
+            icon: "error",
+            title: "Gagal",
+            text: "Loker gagal ditambahkan",
           });
-      }
-  })
-  .catch((err) => {
-      setLoading(false);
-      Swal.fire({
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        Swal.fire({
           icon: "error",
           title: "Gagal",
           text: "Loker gagal ditambahkan",
+        });
       });
-  });
 
   };
   const handleImage = (e) => {
@@ -62,8 +79,9 @@ export default function InputLoker() {
     setImage(file);
     setPrevImage(URL.createObjectURL(file));
   };
-
-
+  useEffect(() => {
+    handleGetMitra();
+  }, [])
   return (
     <>
       <section className="trending-product section">
@@ -122,21 +140,23 @@ export default function InputLoker() {
                               />
                             </div>
                           </div>
-                          {/* <div className="form-row">
+                          <div className="form-row">
                             <div className="form-group col-12">
                               <label>Nama Mitra</label>
                               <select
                                 className="form-control form-control-sm"
+                                value={selectedMitra}
+                                onChange={(e) => setSelectedMitra(e.target.value)}
                               >
                                 <option value="-">
                                   Pilih...
                                 </option>
-                                <option value="admin">Indomaret</option>
-                                <option value="kabag">Indomaret</option>
-                                <option value="ketua_alumni">Stikom</option>
+                                {mitra.length > 0 ? mitra.map((item, index) => (
+                                  <option key={index} value={item.id}>{item.name}</option>
+                                )) : null}
                               </select>
                             </div>
-                          </div> */}
+                          </div>
                           <div className="form-row">
                             <div className="form-group col-sm-12">
                               <label>Persyaratan</label>

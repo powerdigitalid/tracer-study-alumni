@@ -10,7 +10,7 @@ export default async function handler(req, res) {
         }
       })
         .then((loker) => {
-          res.status(204).json({
+          res.status(200).json({
             message: 'success',
             data: loker
           });

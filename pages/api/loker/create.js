@@ -22,22 +22,23 @@ const upload = multer({
   },
 });
 
-export default async (req, res) => {
+export default async function handler (req, res) {
   if (req.method === "POST") {
     upload.single("image")(req, res, async (err) => {
       if (err) {
         return res.status(400).json({ error: err.message });
       }
-      const { nama, persyaratan } = req.body;
+      const { nama, persyaratan, mitraId } = req.body;
       const image = `/upload/${req.file.filename}`;
       const product = await prisma.loker.create({
         data: {
           nama,
           persyaratan,
+          mitraId: parseInt(mitraId),
           image,
         },
       });
-      return res.status(200).json(product);
+      return res.status(200).json({message: "success", data: product});
     });
   }
 };

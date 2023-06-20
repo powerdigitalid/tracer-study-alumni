@@ -61,6 +61,7 @@ model Loker {
   nama        String
   persyaratan String
   image       String?   @db.Text
+  tombol      String    @default("enable")
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now()) @updatedAt
   lamarans    Lamaran[]

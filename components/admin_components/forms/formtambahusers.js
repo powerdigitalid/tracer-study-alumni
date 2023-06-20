@@ -51,7 +51,7 @@ export default function TambahDataUsers() {
               <div className="col-md-4">
                 <div>
                   <label htmlFor="exampleInputName2">Password</label>
-                  <input type="password" className="form-control form-control-sm text-left text-left" id="exampleInputName2" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                  <input type="password" className="form-control form-control-sm text-left" id="exampleInputName2" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
               </div>
               <div className="col-md-4">
@@ -62,6 +62,7 @@ export default function TambahDataUsers() {
                     <option value="admin">Admin</option>
                     <option value="kabag">Kabag</option>
                     <option value="mitra">Mitra</option>
+                    <option value="alumni">Alumni</option>
                     <option value="ketua_alumni">Ketua Alumni</option>
                   </select>
                 </div>

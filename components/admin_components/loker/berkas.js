@@ -35,8 +35,7 @@ export default function Berkas() {
         <div className="col-lg-4 col-md-4 col-sm-12">
           <div className="product-image">
             <Image
-              // src={data.image}
-              src="/dist/img/LogoIndomaret.png"
+              src={data.image}
               className="h-auto w-auto"
               width={300}
               height={300}
@@ -54,11 +53,11 @@ export default function Berkas() {
             </a>
             {/* <h4>{data.nama}</h4> */}
             <h4>Admin Indomaret</h4>
-            <h5 className="text-primary">Indomaret</h5>
+            <h5 className="text-primary">{data.nama}</h5>
             <a href="#">[edit]</a>
             <p className="text-dark text-bold">Persyaratan</p>
             <span className="category m-2">
-              {/* {data.persyaratan} */}
+              {data.persyaratan}
               disiplin <br />
               bertanggung jawab <br />
             </span>

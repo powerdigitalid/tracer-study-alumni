@@ -11,7 +11,7 @@ export const config = {
   
   const upload = multer({
     storage: multer.diskStorage({
-      destination: "./public/upload",
+      destination: "./public/file",
       filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const name = path.basename(file.originalname, ext);
@@ -19,7 +19,8 @@ export const config = {
       },
     }),
     limits: {
-      fileSize: 100000000, // 1 MB
+      //size 10mb
+      fileSize: 10000000,
     },
   });
 
@@ -30,7 +31,7 @@ export default async (req, res) => {
                 return res.status(400).json({ error: err.message });
             }
             const { lokerId, alumnisId } = req.body;
-            const berkas = `/upload/${req.file.filename}`;
+            const berkas = `/file/${req.file.filename}`;
             const lamaran = await prisma.lamaran.create({
                 data: {
                     berkas,

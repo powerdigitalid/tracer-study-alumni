@@ -1,9 +1,13 @@
 import Image from "next/image";
 import {useState, useEffect } from 'react';
 import {useRouter} from 'next/router'
+import {getCookie} from '../../../libs/cookies.lib';
+import {getSession} from '../../../libs/authentication.lib'
+
 export default function UploadBerkas() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [berkas, setBerkas] = useState(null);
   const router = useRouter();
   const {id} = router.query;
 
@@ -17,6 +21,43 @@ export default function UploadBerkas() {
       console.log(error)
     }
   }
+
+  const handleUploadBerkas = (e)=>{
+    e.preventDefault();
+    const file = e.target.files[0];
+    setBerkas(file);
+  }
+
+  //handleCreateUploadBerkas dengan api 'lamaran/create' dengan method POST mengacu pada alumnisId diambil dari session login automatis dan lokerId diambil dari data loker by id pada handle detail diatas
+  const handleCreateUploadBerkas = async (e) => {
+    e.preventDefault();
+    const session = getSession();
+    const formData = new FormData();
+    formData.append('berkas', berkas);
+    if (session) {
+      const token = getCookie('token');
+      const res = await fetch('/api/lamaran/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          lokerId: data.id,
+          alumnisId: session.id,
+          formData,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const json = await res.json();
+      if (!res.ok) throw Error(json.message);
+      console.log(json);
+      router.push('/user/lamaran');
+    } else {
+      router.push('/login');
+    }
+  };
+
+
 
   useEffect(() => {
     if(id) handleDetail(id);
@@ -32,34 +73,7 @@ export default function UploadBerkas() {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-lg-4 col-md-4 col-sm-12">
-          <div className="product-image">
-            <Image
-              // src={data.image}
-              src="/dist/img/LogoIndomaret.png"
-              className="h-auto w-auto"
-              width={300}
-              height={300}
-              alt="#"
-            />
-          </div>
-        </div>
-        <div className="col-lg-8 col-md-8 col-sm-12">
-          <div className="product-info">
-            {/* <h4>{data.nama}</h4> */}
-            <h4>Admin Indomaret</h4>
-            <h5 className="text-primary">Indomaret</h5>
-            {/* <a href="#">[edit]</a> */}
-            <p className="text-dark text-bold">Persyaratan</p>
-            <span className="category m-2">
-              {/* {data.persyaratan} */}
-              disiplin <br />
-              bertanggung jawab <br />
-            </span>
-          </div>
-        </div>
-      </div>
+      
       <div className="row">
         <div className="card-body">
         <div className="container-fluid">
@@ -72,11 +86,13 @@ export default function UploadBerkas() {
                 </div>
                 <div className="container-fluid">
                   <div className="custom-file">
-                    <input type="file" className="custom-file-input" accept="csv/*" />
+                    <input type="file" className="custom-file-input" accept="csv/*" 
+                    onChange={handleUploadBerkas}
+                    />
                     <label className="custom-file-label" htmlFor="exampleInputFile">Choose File</label>
                   </div>
                   <div className="timeline-footer">
-                    <button className="btn btn-success btn-sm mb-2 mt-2">
+                    <button className="btn btn-success btn-sm mb-2 mt-2" onClick={handleCreateUploadBerkas}>
                       <i className="fas fa-fw fa-upload"></i> Upload File Lamaran
                     </button>
                     <div className="spinner-border text-success float-right mb-2 mt-2" role="status">

@@ -1,9 +1,12 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+// import {getCookie} from '../../../libs/cookies.lib';
+
 export default function Berkas() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  // const [berkas, setBerkas] = useState(null);
   const router = useRouter();
   const { id } = router.query;
 
@@ -17,6 +20,36 @@ export default function Berkas() {
       console.log(error);
     }
   };
+  // const handleUploadBerkas = (e)=>{
+  //   e.preventDefault();
+  //   const file = e.target.files[0];
+  //   setBerkas(file);
+  // }
+
+  // const handleCreateUploadBerkas =(e) => {
+  //   e.preventDefault();
+  //   if (session) {
+  //     const token = getCookie('token');
+  //     const res = await fetch('/api/lamaran/create', {
+  //       method: 'POST',
+  //       body: JSON.stringify({
+  //         id_loker: data.id,
+  //         id_user: session.id,
+  //         berkas: berkas,
+  //       }),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     const json = await res.json();
+  //     if (!res.ok) throw Error(json.message);
+  //     console.log(json);
+  //     router.push('/user/lamaran');
+  //   } else {
+  //     router.push('/login');
+  //   }
+  // };
 
   useEffect(() => {
     if (id) handleDetail(id);

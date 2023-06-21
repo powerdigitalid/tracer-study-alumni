@@ -19,6 +19,7 @@ export default async function handler(req, res) {
           password: alumni.nim
         }
       })
+      data.pop();
       const prisma = new PrismaClient()
       const insert = await prisma.alumnis.createMany({ 
         data: data,

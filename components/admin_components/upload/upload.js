@@ -16,7 +16,7 @@ export default function UploadComponent() {
       setFilename(file.name)
       console.log(fileExt)
       const parse = Papa.parse(file, {
-        delimiter: ";",
+        delimiter: ",",
         header: true,
         complete: (res) => {
           setParsedData(res)

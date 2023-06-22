@@ -82,13 +82,14 @@ export default function CardLoker() {
                       </div>
                       <div className="col-lg-8 col-md-8 col-sm-12">
                         <div className="product-info">
+                          <h6>Status : <label className="text-success">Buka</label><label className="text-danger">Tutup</label></h6>
                           <h4>{item.nama}</h4>
                           <p className="text-dark text-bold">Persyaratan</p>
                           <span className="category m-2">
                             {item.persyaratan}
                           </span>
                           <div className="button">
-                            <a href={`/admin-pages/berkas?id=${item.id}`} className="btn">
+                            <a href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn">
                               <i className="lni lni-cart" /> Ajukan Berkas
                             </a>
                           </div>

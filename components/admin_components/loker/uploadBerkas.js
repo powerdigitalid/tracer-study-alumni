@@ -64,16 +64,7 @@ export default function UploadBerkas() {
   }, [id]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col-12">
-          <div className="section-title">
-            <h2>Upload Berkas</h2>
-            <p>Silahkan Upload Lamaran Sesuai Dengan Persyaratan</p>
-          </div>
-        </div>
-      </div>
-      
+    <div className="container">      
       <div className="row">
         <div className="card-body">
         <div className="container-fluid">
@@ -82,7 +73,7 @@ export default function UploadBerkas() {
             <div className="card">
               <div>
                 <div className="m-2">
-                  Silahkan upload file Lamaran / CV dengan format nama file "namalengkap_mitra"
+                  Silahkan upload file Lamaran / CV dengan format nama file [namalengkap_mitra]
                 </div>
                 <div className="container-fluid">
                   <div className="custom-file">

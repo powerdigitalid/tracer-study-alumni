@@ -64,6 +64,7 @@ export default function Berkas() {
           </div>
         </div>
       </div>
+      <div className="card p-2">
       <div className="row">
         <div className="col-lg-4 col-md-4 col-sm-12">
           <div className="product-image">
@@ -87,7 +88,7 @@ export default function Berkas() {
             {/* <h4>{data.nama}</h4> */}
             <h4>Admin Indomaret</h4>
             <h5 className="text-primary">{data.nama}</h5>
-            <a href="#">[edit]</a>
+            <a href="/admin-pages/loker/editloker">[edit]</a>
             <p className="text-dark text-bold">Persyaratan</p>
             <span className="category m-2">
               {data.persyaratan}
@@ -149,6 +150,7 @@ export default function Berkas() {
           </div>
           {/* /.card */}
         </div>
+      </div>
       </div>
     </div>
   );

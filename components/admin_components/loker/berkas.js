@@ -117,7 +117,7 @@ export default function Berkas() {
                   <Link href={`/admin-pages/loker/editloker?id=${loker.id}`}>[edit]</Link>
                   <p className="text-dark text-bold">Persyaratan</p>
                   <span className="category m-2">
-                    {loker.persyaratan.split(';').map((item, index) => <div key={index}>{item}<br /></div>)}
+                    {loker.persyaratan}
                   </span>
                 </div>
               </div>
@@ -206,7 +206,7 @@ export default function Berkas() {
                   <Link href={`/admin-pages/loker/editloker?id=${loker.id}`}>[edit]</Link>
                   <p className="text-dark text-bold">Persyaratan</p>
                   <span className="category m-2">
-                    {loker.persyaratan.split(';').map((item, index) => <div key={index}>{item}<br /></div>)}
+                    {loker.persyaratan}
                   </span>
                 </div>
               </div>

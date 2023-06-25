@@ -2,6 +2,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
 import { getCookie } from "../../../libs/cookies.lib";
+import Link from "next/link";
 export default function CardLoker() {
   const [loker, setLoker] = useState([]);
   const [session, setSession] = useState({});
@@ -89,12 +90,12 @@ export default function CardLoker() {
                           <h4>{item.nama}</h4>
                           <p className="text-dark text-bold">Persyaratan</p>
                           <span className="category m-2">
-                            {item.persyaratan.split(';').map((item, index) => (<>{item}<br/></>))}
+                            {item.persyaratan.split(';').map((item, index) => (<div key={index}>{item}<br/></div>))}
                           </span>
                           <div className="button">
-                            <a href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn" aria-disabled={item.tombol === 'enable' ? false : true}>
+                            <Link href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn" aria-disabled={item.tombol === 'enable' ? false : true}>
                               <i className="lni lni-cart" /> Ajukan Berkas
-                            </a>
+                            </Link>
                           </div>
                         </div>
                       </div>

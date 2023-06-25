@@ -1,10 +1,9 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-// import {getCookie} from '../../../libs/cookies.lib';
 
 export default function TableBerkas() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [mitra, setMitra] = useState({});
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -14,7 +13,10 @@ export default function TableBerkas() {
     try {
       const res = await fetch(`/api/loker/${id}`);
       const json = await res.json();
+      const resMitra = await fetch(`/api/user/${json.data.mitraId}`);
+      const jsonMitra = await resMitra.json();
       setData(json.data);
+      setMitra(jsonMitra.data);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -22,7 +24,9 @@ export default function TableBerkas() {
   };
 
   useEffect(() => {
-    if (id) handleDetail(id);
+    setTimeout(() => {
+      if (id) handleDetail(id);
+    }, 1000);
   }, [id]);
 
   return (
@@ -50,9 +54,11 @@ export default function TableBerkas() {
           <div className="col-lg-8 col-md-8 col-sm-12">
             <div className="product-info">
               <h4>{data.nama}</h4>
-              <h5 className="text-primary">{data.nama}</h5>
+              <h5 className="text-primary">{mitra.name}</h5>
               <p className="text-dark text-bold">Persyaratan</p>
-              <span className="category m-2">{data.persyaratan}</span>
+              <span className="category m-2">
+                {data.persyaratan}
+              </span>
             </div>
           </div>
         </div>

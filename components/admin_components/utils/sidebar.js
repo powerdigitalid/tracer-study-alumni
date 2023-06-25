@@ -89,7 +89,7 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
                 </p>
               </Link>
             </li>
-            <li className="nav-item" hidden={user.role === 'admin' ? false : true}>
+            <li className="nav-item" hidden={user.role === 'admin' || user.role === 'alumni' ? false : true}>
               <Link href={`/admin-pages/loker`} className={`nav-link ${isActiveNavItem == 6 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-info" />
                 <p>

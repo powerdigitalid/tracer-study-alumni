@@ -1,30 +1,54 @@
+import multer from "multer";
 import { prisma } from "../../../libs/prisma.lib";
+import path from "path";
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: "./public/upload",
+    filename: (req, file, cb) => {
+      const ext = path.extname(file.originalname);
+      const name = path.basename(file.originalname, ext);
+      cb(null, `${name}-${Date.now()}${ext}`);
+    },
+  }),
+  limits: {
+    fileSize: 10000000, // 1 MB
+  },
+});
 
 export default async function handler(req, res) {
   try {
     if(req.method === 'PUT'){
-      const { id, namaInstansi, persyaratan, image } = req.body;
-      await prisma.loker.update({
-        where: {
-          id: id
-        },
-        data: {
-          nama: namaInstansi,
-          persyaratan: persyaratan,
-          image: image
+      upload.single("image")(req, res, (err) => {
+        if (err) {
+          return res.status(400).json({ error: err.message });
         }
-      })
-        .then((loker) => {
-          res.status(200).json({
-            message: 'success',
-            data: loker
-          });
+        const { id, nama, persyaratan, mitraId } = req.body;
+        const image = `/upload/${req.file.filename}`;
+        prisma.loker.update({
+          where: {
+            id: parseInt(id)
+          },
+          data: {
+            nama,
+            persyaratan,
+            mitraId: parseInt(mitraId),
+            image,
+          },
+        })
+        .then((result) => {
+          res.status(200).json({message: "success", data: result});
         })
         .catch((err) => {
-          res.status(500).json({
-            message: err.message
-          });
+          res.status(400).json({message: err.message});
         });
+      });
     } else {
       res.status(400).json({message: 'Bad Request'});
     }

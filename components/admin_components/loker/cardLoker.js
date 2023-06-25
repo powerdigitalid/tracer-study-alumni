@@ -1,8 +1,10 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Swal from 'sweetalert2'
+import { getCookie } from "../../../libs/cookies.lib";
 export default function CardLoker() {
   const [loker, setLoker] = useState([]);
+  const [session, setSession] = useState({});
   const handleGetLoker = () => {
     fetch("/api/loker/all")
       .then((res) => res.json())
@@ -16,6 +18,7 @@ export default function CardLoker() {
   useEffect(() => {
     setTimeout(() => {
       handleGetLoker();
+      setSession(getCookie("user"));
     }, 1000);
   }, [loker]);
 
@@ -60,15 +63,15 @@ export default function CardLoker() {
             </div>
           </div>
           <div className="row">
-            {loker.length > 0 ? ( 
+            {loker.length > 0 ? (
               loker.map((item, index) => (
                 <div key={index} className="col-lg-6 col-md-6 col-sm-6">
                   {/* Start Single Product */}
                   <div className="single-product">
                     <div className="row">
                       <div className="col-lg-4 col-md-4 col-sm-12">
-                        <div className="btn btn-danger btn-sm" onClick={() => handleDelete(item.id)}>
-                          X
+                        <div className="btn btn-danger btn-sm" hidden={session.role === 'admin' ? false : true} onClick={() => handleDelete(item.id)}>
+                          <i className="fas fa-trash"></i>
                         </div>
                         <div className="product-image">
                           <Image
@@ -82,14 +85,14 @@ export default function CardLoker() {
                       </div>
                       <div className="col-lg-8 col-md-8 col-sm-12">
                         <div className="product-info">
-                          <h6>Status : <label className="text-success">Buka</label><label className="text-danger">Tutup</label></h6>
+                          <h6>Status : {item.tombol === 'enable' ? <label className="text-success">Buka</label> : <label className="text-danger">Tutup</label>}</h6>
                           <h4>{item.nama}</h4>
                           <p className="text-dark text-bold">Persyaratan</p>
                           <span className="category m-2">
-                            {item.persyaratan}
+                            {item.persyaratan.split(';').map((item, index) => (<>{item}<br/></>))}
                           </span>
                           <div className="button">
-                            <a href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn">
+                            <a href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn" aria-disabled={item.tombol === 'enable' ? false : true}>
                               <i className="lni lni-cart" /> Ajukan Berkas
                             </a>
                           </div>

@@ -27,7 +27,7 @@ export default function Login() {
             username: res.data.username,
             role: res.data.role
           })
-          setCookie('user', JSON.stringify({isLoggedIn: true, username: res.data.username, role: res.data.role}), 1)
+          setCookie('user', JSON.stringify({isLoggedIn: true, username: res.data.username, role: res.data.role, id: res.data.id}), 1)
           router.push('/admin-pages/admin')
         } else {
           Swal.fire({

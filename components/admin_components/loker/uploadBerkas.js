@@ -1,15 +1,15 @@
 import Image from "next/image";
-import {useState, useEffect } from 'react';
-import {useRouter} from 'next/router'
-import {getCookie} from '../../../libs/cookies.lib';
-import {getSession} from '../../../libs/authentication.lib'
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router'
+import { getCookie } from '../../../libs/cookies.lib';
+import { getSession } from '../../../libs/authentication.lib'
 
 export default function UploadBerkas() {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [berkas, setBerkas] = useState(null);
   const router = useRouter();
-  const {id} = router.query;
+  const { id } = router.query;
 
   const handleDetail = async (id) => {
     try {
@@ -17,12 +17,12 @@ export default function UploadBerkas() {
       const json = await res.json();
       setData(json.data);
       setLoading(false);
-    } catch (error){
+    } catch (error) {
       console.log(error)
     }
   }
 
-  const handleUploadBerkas = (e)=>{
+  const handleUploadBerkas = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
     setBerkas(file);
@@ -57,45 +57,43 @@ export default function UploadBerkas() {
     }
   };
 
-
-
   useEffect(() => {
-    if(id) handleDetail(id);
+    if (id) handleDetail(id);
   }, [id]);
 
   return (
-    <div className="container">      
+    <div className="container">
       <div className="row">
         <div className="card-body">
-        <div className="container-fluid">
-        <div className="row">
-          <div className="col-md-12">
-            <div className="card">
-              <div>
-                <div className="m-2">
-                  Silahkan upload file Lamaran / CV dengan format nama file [namalengkap_mitra]
-                </div>
-                <div className="container-fluid">
-                  <div className="custom-file">
-                    <input type="file" className="custom-file-input" accept="csv/*" 
-                    onChange={handleUploadBerkas}
-                    />
-                    <label className="custom-file-label" htmlFor="exampleInputFile">Choose File</label>
-                  </div>
-                  <div className="timeline-footer">
-                    <button className="btn btn-success btn-sm mb-2 mt-2" onClick={handleCreateUploadBerkas}>
-                      <i className="fas fa-fw fa-upload"></i> Upload File Lamaran
-                    </button>
-                    <div className="spinner-border text-success float-right mb-2 mt-2" role="status">
-                      <span className="sr-only">Loading...</span>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-md-12">
+                <div className="card">
+                  <div>
+                    <div className="m-2">
+                      Silahkan upload file Lamaran / CV dengan format nama file [namalengkap_mitra]
+                    </div>
+                    <div className="container-fluid">
+                      <div className="custom-file">
+                        <input type="file" className="custom-file-input" accept="csv/*"
+                          onChange={handleUploadBerkas}
+                        />
+                        <label className="custom-file-label" htmlFor="exampleInputFile">Choose File</label>
+                      </div>
+                      <div className="timeline-footer">
+                        <button className="btn btn-success btn-sm mb-2 mt-2" onClick={handleCreateUploadBerkas}>
+                          <i className="fas fa-fw fa-upload"></i> Upload File Lamaran
+                        </button>
+                        <div className="spinner-border text-success float-right mb-2 mt-2" role="status">
+                          <span className="sr-only">Loading...</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
         </div>
       </div>
     </div>

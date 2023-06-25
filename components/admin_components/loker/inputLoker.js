@@ -163,7 +163,7 @@ export default function InputLoker() {
                               <textarea
                                 className="form-control"
                                 value={persyaratan}
-                                onChange={(e) => setPersyaratan(e.target.value)}
+                                onChange={(e) => setPersyaratan(e.target.value.replace(/\n/g, ';'))}
                                 placeholder="Masukan Persyaratan Loker"
                               />
                             </div>

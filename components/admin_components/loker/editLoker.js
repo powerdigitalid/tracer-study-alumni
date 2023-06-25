@@ -1,8 +1,10 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Swal from "sweetalert2";
 
-export default function InputLoker() {
+export default function EditLoker() {
+  const [loker, setLoker] = useState({});
   const [nama, setNama] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
   const [previmage, setPrevImage] = useState("/dist/img/LogoIndomaret.png");
@@ -10,21 +12,30 @@ export default function InputLoker() {
   const [loading, setLoading] = useState(false);
   const [mitra, setMitra] = useState([]);
   const [selectedMitra, setSelectedMitra] = useState("-");
-  const handleGetMitra = () => {
-    fetch("/api/user/all?role=mitra", {
-      method: "GET",
+  const router = useRouter();
+  const handleGetLoker = () => {
+    setLoading(true);
+    const { id } = router.query;
+    fetch('/api/loker/' + id, {
+      method: 'GET',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
       .then(res => res.json())
       .then((res) => {
-        setMitra(res.data);
+        setLoker(res.data);
+        setNama(res.data.nama);
+        setPersyaratan(res.data.persyaratan);
+        setSelectedMitra(res.data.mitraId);
+        setPrevImage(res.data.image);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
-  }
+  };
   const handleClear = (e) => {
     e.preventDefault();
     setNama("");
@@ -33,15 +44,16 @@ export default function InputLoker() {
     setImage(null);
     setPrevImage("/dist/img/LogoIndomaret.png");
   };
-  const handleCreateLoker = (e) => {
+  const handleUpdateLoker = (e) => {
     e.preventDefault();
     const formData = new FormData();
+    formData.append("id", parseInt(router.query.id));
     formData.append("nama", nama);
     formData.append("persyaratan", persyaratan);
     formData.append("mitraId", selectedMitra);
     formData.append("image", image);
-    fetch("/api/loker/create", {
-      method: "POST",
+    fetch(`/api/loker/update`, {
+      method: "PUT",
       body: formData,
     })
       .then((res) => res.json())
@@ -51,15 +63,16 @@ export default function InputLoker() {
           Swal.fire({
             icon: "success",
             title: "Sukses",
-            text: "Loker berhasil ditambahkan",
+            text: "Loker berhasil diperbarui!",
           });
           handleClear(e);
+          router.back();
         } else {
           setLoading(false);
           Swal.fire({
             icon: "error",
             title: "Gagal",
-            text: "Loker gagal ditambahkan",
+            text: "Loker gagal diperbarui!",
           });
         }
       })
@@ -68,10 +81,9 @@ export default function InputLoker() {
         Swal.fire({
           icon: "error",
           title: "Gagal",
-          text: "Loker gagal ditambahkan",
+          text: "Loker gagal diperbarui!",
         });
       });
-
   };
   const handleImage = (e) => {
     e.preventDefault();
@@ -80,7 +92,9 @@ export default function InputLoker() {
     setPrevImage(URL.createObjectURL(file));
   };
   useEffect(() => {
-    handleGetMitra();
+    setTimeout(() => {
+      handleGetLoker();
+    }, 1000);
   }, [])
   return (
     <>
@@ -89,7 +103,7 @@ export default function InputLoker() {
           <div className="row">
             <div className="col-12">
               <div className="section-title">
-                <h2>Input Loker</h2>
+                <h2>Edit Loker</h2>
               </div>
             </div>
           </div>
@@ -146,7 +160,6 @@ export default function InputLoker() {
                               <select
                                 className="form-control form-control-sm"
                                 value={selectedMitra}
-                                onChange={(e) => setSelectedMitra(e.target.value)}
                                 disabled
                               >
                                 <option value="-">
@@ -175,7 +188,7 @@ export default function InputLoker() {
                         <div className="row float-right">
                           <button
                             className="btn btn-success"
-                            onClick={handleCreateLoker}
+                            onClick={handleUpdateLoker}
                           >
                             <i className="fas fa-edit"></i> Edit
                           </button>

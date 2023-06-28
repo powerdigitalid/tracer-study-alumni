@@ -9,6 +9,7 @@ export default function UploadBerkas() {
   const [loading, setLoading] = useState(false);
   const [berkas, setBerkas] = useState(null);
   const [session, setSession] = useState({});
+  console.log(session)
   const router = useRouter();
   const { id } = router.query;
   const handleDetail = async (id) => {
@@ -39,7 +40,7 @@ export default function UploadBerkas() {
         body: formData,
       });
       const json = await res.json();
-      Swal.fire({ 
+      Swal.fire({
         icon: "success",
         title: "Sukses",
         text: "Berkas berhasil diunggah!",
@@ -60,33 +61,38 @@ export default function UploadBerkas() {
   }, [id]);
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="card-body">
-          <div className="container-fluid">
-            <div className="row">
-              <div className="col-md-12">
-                <div className="card">
-                  <div>
-                    <div className="m-2">
-                      Silahkan upload file Lamaran / CV dengan format nama file [namalengkap_mitra]
-                    </div>
-                    <div className="container-fluid">
-                      <div className="custom-file">
-                        <input type="file" className="custom-file-input" accept="csv/*"
-                          onChange={(e) => handleUploadBerkas(e)}
-                        />
-                        <label className="custom-file-label" htmlFor="exampleInputFile">Choose File</label>
-                      </div>
-                      <div className="timeline-footer">
-                        <button className="btn btn-success btn-sm mb-2 mt-2" onClick={handleCreateUploadBerkas}>
-                          <i className="fas fa-fw fa-upload"></i> Upload File Lamaran
-                        </button>
-                        {loading ? (
-                          <div className="spinner-border text-success float-right mb-2 mt-2" role="status">
-                            <span className="sr-only">Loading...</span>
+    <>
+      {session.role === 'mitra' ?
+        "" : 
+        <div className="container">
+          <div className="row">
+            <div className="card-body">
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col-md-12">
+                    <div className="card">
+                      <div>
+                        <div className="m-2">
+                          Silahkan upload file Lamaran / CV dengan format nama file [namalengkap_mitra]
+                        </div>
+                        <div className="container-fluid">
+                          <div className="custom-file">
+                            <input type="file" className="custom-file-input" accept="csv/*"
+                              onChange={(e) => handleUploadBerkas(e)}
+                            />
+                            <label className="custom-file-label" htmlFor="exampleInputFile">Choose File</label>
                           </div>
-                        ) : <></>}
+                          <div className="timeline-footer">
+                            <button className="btn btn-success btn-sm mb-2 mt-2" onClick={handleCreateUploadBerkas}>
+                              <i className="fas fa-fw fa-upload"></i> Upload File Lamaran
+                            </button>
+                            {loading ? (
+                              <div className="spinner-border text-success float-right mb-2 mt-2" role="status">
+                                <span className="sr-only">Loading...</span>
+                              </div>
+                            ) : <></>}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -95,7 +101,7 @@ export default function UploadBerkas() {
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      }
+    </>
   );
 }

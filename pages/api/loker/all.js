@@ -10,19 +10,22 @@ export default async function handler(req, res) {
             mitraId: parseInt(mitraId)
           },
           select: {
-            user: true
+            nama: true,
+            persyaratan: true,
+            image: true,
+            tombol: true
           }
         })
-          .then((lokers) => {
-            if (lokers.length == 0) {
+          .then((loker) => {
+            if (loker.length == 0) {
               res.status(200).json({
                 message: 'unavailable',
-                data: lokers
+                data: loker
               })
             } else {
               res.status(200).json({
                 message: 'available',
-                data: lokers
+                data: loker
               })
             }
           });

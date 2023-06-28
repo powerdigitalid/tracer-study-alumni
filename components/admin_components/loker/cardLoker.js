@@ -6,6 +6,11 @@ import Link from "next/link";
 export default function CardLoker() {
   const [loker, setLoker] = useState([]);
   const [session, setSession] = useState({});
+  const [dataFilter, setDataFilter] = useState([]);
+  // console.log(session)
+  // console.log(loker)
+  // console.log(dataFilter)
+
   const handleGetLoker = () => {
     fetch("/api/loker/all")
       .then((res) => res.json())
@@ -20,8 +25,25 @@ export default function CardLoker() {
     setTimeout(() => {
       handleGetLoker();
       setSession(getCookie("user"));
-    }, 1000);
+    }, 3000);
   }, [loker]);
+
+  const FilterMitra = () => {
+    if(session.role === 'admin' || 'alumni') {
+      setDataFilter(loker);
+    } else {
+      const filteredLoker = loker.filter((item) => item.mitraId === session.id);
+      console.log(filteredLoker)
+      setDataFilter(filteredLoker)
+    }
+  }
+
+  useEffect(() => {
+    setTimeout(() => {
+      FilterMitra();
+      setSession(getCookie("user"));
+    }, 3000);
+  }, [loker])
 
   const handleDelete = (id) => {
     fetch(`/api/loker/delete?id=${id}`, {
@@ -64,8 +86,8 @@ export default function CardLoker() {
             </div>
           </div>
           <div className="row">
-            {loker.length > 0 ? (
-              loker.map((item, index) => (
+            {dataFilter.length > 0 ? (
+              dataFilter.map((item, index) => (
                 <div key={index} className="col-lg-6 col-md-6 col-sm-6">
                   {/* Start Single Product */}
                   <div className="single-product">

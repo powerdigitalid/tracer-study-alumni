@@ -5,7 +5,8 @@ import { useRouter } from "next/router";
 import { getCookie } from "../../../libs/cookies.lib";
 import { useEffect } from "react";
 import Berkas from "../../../components/admin_components/loker/berkas";
-// import BerkasUpload from "../../../components/admin_components/loker/uploadBerkas";
+import CardLoker from "../../../components/admin_components/loker/cardLoker";
+import BerkasUpload from "../../../components/admin_components/loker/uploadBerkas";
 
 export default function BerkasPages() {
   const router = useRouter()
@@ -17,8 +18,9 @@ export default function BerkasPages() {
   }, [])
   return (
     <Layout title="Data Tracer Alumni - Tracer Study" activeNavBarItem={7} activeUser={''}>
+      <CardLoker/>
       <Berkas/>
-      {/* <BerkasUpload/> */}
+      <BerkasUpload/>
     </Layout>
   )
 }

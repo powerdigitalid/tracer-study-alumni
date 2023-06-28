@@ -10,9 +10,12 @@ function Conditional({ condition, children }) {
 
 export default function Berkas() {
   const [data, setData] = useState([]);
+  const [lamaran, setLamaran] = useState([]);
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("");
   const [session, setSession] = useState({});
+  console.log(session)
+  console.log(data)
   const router = useRouter();
   const { id } = router.query;
   const handleDetail = async (id) => {
@@ -34,6 +37,7 @@ export default function Berkas() {
         .then((res) => res.json())
         .then((res) => {
           if (res.message == "available") {
+            console.log(res)
             setData(res.data);
             setLoading(false);
           } else {
@@ -65,6 +69,54 @@ export default function Berkas() {
         });
     }
   }
+
+  const handleTableDetail = async (id) => {
+    try {
+      const res = await fetch(`/api/lamaran/${id}`);
+      const json = await res.json();
+      setLamaran(json.data);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  const handleGetTable = (id) => {
+    setLoading(true);
+    if (id !== null) {
+      fetch(`/api/lamaran/all?lokerId=${id}`, {
+        method: "GET"
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.message == "available") {
+            setLamaran(res.data);
+            setLoading(false);
+          } else {
+            setData([]);
+            setLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+          setLoading(false);
+        });
+    } else {
+      fetch(`api/lamaran/all`, {
+        method: "GET"
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          if (res.message == "available") {
+            setLamaran(res.data);
+            setLoading(false);
+          } else {
+            setLamaran([]);
+            setLoading(false);
+          }
+        })
+    }
+  }
+
   useEffect(() => {
     if (id) {
       handleDetail(id);
@@ -80,6 +132,22 @@ export default function Berkas() {
       }
     }, 1000);
   }, []);
+
+  // useEffect(() => {
+  //   if(id) {
+  //     handleTableDetail(id);
+  //   }
+  //   setTimeout(() => {
+  //     setLoading(true);
+  //     const session = getCookie('user');
+  //     if (session) {
+  //       const { role, id } = session;
+  //       setRole(role);
+  //       setSession(session);
+  //       if (session.role === 'admin') { handleGetTable(null) } else { handleGetTable(id) };
+  //     }
+  //   }, 1000)
+  // }, [])
   return (
     <div className="container">
       <div className="row">
@@ -98,8 +166,8 @@ export default function Berkas() {
                   <Image
                     src={loker.image}
                     className="h-auto w-auto"
-                    width={200}
-                    height={200}
+                    width={300}
+                    height={300}
                     alt="#"
                   />
                 </div>

@@ -7,9 +7,11 @@ export default function CardLoker() {
   const [loker, setLoker] = useState([]);
   const [session, setSession] = useState({});
   const [dataFilter, setDataFilter] = useState([]);
+  // const [status, setStatus] = useState();
   // console.log(session)
   // console.log(loker)
   // console.log(dataFilter)
+
 
   const handleGetLoker = () => {
     fetch("/api/loker/all")
@@ -29,7 +31,7 @@ export default function CardLoker() {
   }, [loker]);
 
   const FilterMitra = () => {
-    if(session.role === 'admin' || 'alumni') {
+    if (session.role === 'admin' || 'alumni') {
       setDataFilter(loker);
     } else {
       const filteredLoker = loker.filter((item) => item.mitraId === session.id);
@@ -44,6 +46,8 @@ export default function CardLoker() {
       setSession(getCookie("user"));
     }, 3000);
   }, [loker])
+
+
 
   const handleDelete = (id) => {
     fetch(`/api/loker/delete?id=${id}`, {
@@ -112,12 +116,15 @@ export default function CardLoker() {
                           <h4>{item.nama}</h4>
                           <p className="text-dark text-bold">Persyaratan</p>
                           <span className="category m-2">
-                            {item.persyaratan.split(';').map((item, index) => (<div key={index}>{item}<br/></div>))}
+                            {item.persyaratan.split(';').map((item, index) => (<div key={index}>{item}<br /></div>))}
                           </span>
                           <div className="button">
-                            <Link href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn" aria-disabled={item.tombol === 'enable' ? false : true}>
-                              <i className="lni lni-cart" /> Ajukan Berkas
-                            </Link>
+                            {item.tombol === 'enable' ?
+                              <Link href={`/admin-pages/upload/uploadberkas?id=${item.id}`} className="btn">
+                                <i className="lni lni-cart" /> Ajukan Berkas
+                              </Link> :
+                              ''
+                            }
                           </div>
                         </div>
                       </div>

@@ -18,43 +18,45 @@ const upload = multer({
     },
   }),
   limits: {
-    fileSize: 10000000, // 1 MB
+    fileSize: 100000000, // 1 MB
   },
 });
 
 export default async function handler(req, res) {
   try {
-    if(req.method === 'PUT'){
+    if (req.method === "PUT") {
       upload.single("image")(req, res, (err) => {
         if (err) {
           return res.status(400).json({ error: err.message });
         }
-        const { id, nama, persyaratan, mitraId } = req.body;
-        const image = `/upload/${req.file.filename}`;
-        prisma.loker.update({
-          where: {
-            id: parseInt(id)
-          },
-          data: {
-            nama,
-            persyaratan,
-            mitraId: parseInt(mitraId),
-            image,
-          },
-        })
-        .then((result) => {
-          res.status(200).json({message: "success", data: result});
-        })
-        .catch((err) => {
-          res.status(400).json({message: err.message});
-        });
+        const { id, nama, persyaratan, mitraId, image } = req.body;
+        const images = req.file ? `/upload/${req.file.filename}` : image; // Periksa jika req.file ada sebelum menggunakan req.file.filename
+
+        prisma.loker
+          .update({
+            where: {
+              id: parseInt(id),
+            },
+            data: {
+              nama,
+              persyaratan,
+              mitraId: parseInt(mitraId),
+              image: images,
+            },
+          })
+          .then((result) => {
+            res.status(200).json({ message: "success", data: result });
+          })
+          .catch((err) => {
+            res.status(400).json({ message: err.message });
+          });
       });
     } else {
-      res.status(400).json({message: 'Bad Request'});
+      res.status(400).json({ message: "Bad Request" });
     }
   } catch (error) {
     res.status(500).json({
-      message: error.message
+      message: error.message,
     });
   }
 }

@@ -7,12 +7,14 @@ export default function EditLoker() {
   const [loker, setLoker] = useState({});
   const [nama, setNama] = useState("");
   const [persyaratan, setPersyaratan] = useState("");
-  const [previmage, setPrevImage] = useState("/dist/img/LogoIndomaret.png");
-  const [image, setImage] = useState("");
+  const [previmage, setPrevImage] = useState();
+  const [image, setImage] = useState(previmage);
   const [loading, setLoading] = useState(false);
   const [mitra, setMitra] = useState([]);
   const [selectedMitra, setSelectedMitra] = useState("-");
   const router = useRouter();
+  console.log(loker.nama)
+  console.log(previmage)
   const handleGetLoker = () => {
     setLoading(true);
     const { id } = router.query;
@@ -30,6 +32,7 @@ export default function EditLoker() {
         setSelectedMitra(res.data.mitraId);
         setPrevImage(res.data.image);
         setLoading(false);
+        setImage(res.data.image)
       })
       .catch((err) => {
         console.log(err);
@@ -42,7 +45,7 @@ export default function EditLoker() {
     setPersyaratan("");
     setSelectedMitra("-");
     setImage(null);
-    setPrevImage("/dist/img/LogoIndomaret.png");
+    setPrevImage("");
   };
   const handleUpdateLoker = (e) => {
     e.preventDefault();
@@ -88,6 +91,7 @@ export default function EditLoker() {
   const handleImage = (e) => {
     e.preventDefault();
     const file = e.target.files[0];
+    // console.log(file)
     setImage(file);
     setPrevImage(URL.createObjectURL(file));
   };
@@ -128,7 +132,7 @@ export default function EditLoker() {
                         type="file"
                         className="custom-file-input"
                         id="source"
-                        name="source"
+                        name="image"
                         onChange={(e) => handleImage(e)}
                       />
                       <label className="custom-file-label" htmlFor="customFile">

@@ -10,6 +10,7 @@ export default async function handler(req, res) {
             mitraId: parseInt(mitraId)
           },
           select: {
+            id: true,
             nama: true,
             persyaratan: true,
             image: true,

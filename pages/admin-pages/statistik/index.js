@@ -3,7 +3,7 @@ import Layout from "../../../components/admin_components/utils/layout";
 import useLoginStore from "../../../store/store";
 import { useRouter } from "next/router";
 import { getCookie } from "../../../libs/cookies.lib";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Chart from "../../../components/admin_components/statistik/chart";
 
 export default function Statistik() {
@@ -33,6 +33,28 @@ export default function Statistik() {
   }
   
   var hasilJumlah = jumlahkanData(data);
+  
+  const [counter, setCounter] = useState({mitras: 0})
+  const handleCount = () => {
+    fetch('/api/countloker', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data)
+        setCounter(data.data)
+      })
+      .catch(err => {
+       console.log('Error: ', err.message)
+      })
+  }
+
+  useEffect(() => {
+    handleCount()
+  }, [])
 
   return (
     <Layout
@@ -47,7 +69,7 @@ export default function Statistik() {
         </div>
         <div className="col-md-6">
           <ul style={{listStyleType:"square"}}>
-            <li style={{fontSize:"20px"}}>Jumlah Mitra Masuk : {hasilJumlah}</li>
+            <li style={{fontSize:"20px"}}>Jumlah Mitra Masuk : {counter.mitras}</li>
           </ul>
         </div>
       </div>

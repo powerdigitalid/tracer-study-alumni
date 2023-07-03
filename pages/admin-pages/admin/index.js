@@ -23,13 +23,6 @@ export default function AdminHome() {
     { year: 2021, count: 220 },
     { year: 2022, count: 100 },
   ];
-  const data2 = [
-    { year: 2018, count: 200 },
-    { year: 2019, count: 120 },
-    { year: 2020, count: 120 },
-    { year: 2021, count: 220 },
-    { year: 2022, count: 100 },
-  ];
 
   return (
     <Layout title="Admin - Tracer Study" activeNavBarItem={1} activeUser={""}>
@@ -38,9 +31,6 @@ export default function AdminHome() {
       <div className="row">
         <div className="col-md-6">
           <Chart data={data} />
-        </div>
-        <div className="col-md-6">
-          <Chart data={data2} />
         </div>
       </div>
     </Layout>

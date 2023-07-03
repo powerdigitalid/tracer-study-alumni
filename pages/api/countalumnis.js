@@ -15,24 +15,34 @@ export default async function handler(req, res) {
             tracered: 'false'
           }
         }),
+        alumnis17: await prisma.alumnis.count({
+          where: {
+            lulus: '2017'
+          }
+        }),
+        alumnis18: await prisma.alumnis.count({
+          where: {
+            lulus: '2018'
+          }
+        }),
         alumnis19: await prisma.alumnis.count({
           where: {
-            angkatan: '2019'
+            lulus: '2019'
           }
         }),
         alumnis20: await prisma.alumnis.count({
           where: {
-            angkatan: '2020'
+            lulus: '2020'
           }
         }),
         alumnis21: await prisma.alumnis.count({
           where: {
-            angkatan: '2021'
+            lulus: '2021'
           }
         }),
         alumnis22: await prisma.alumnis.count({
           where: {
-            angkatan: '2022'
+            lulus: '2022'
           }
         }),
       }

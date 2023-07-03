@@ -97,7 +97,7 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
                 </p>
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" hidden={user.role === 'mitra' ? false : true}>
               <Link href={`/admin-pages/berkas`} className={`nav-link ${isActiveNavItem == 7 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-sticky-note" />
                 <p>
@@ -105,7 +105,7 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
                 </p>
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item" hidden={user.role === 'admin' ? false : true}>
               <Link href={`/admin-pages/statistik`} className={`nav-link ${isActiveNavItem == 8 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-sort-amount-up" />
                 <p>

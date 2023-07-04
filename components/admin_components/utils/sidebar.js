@@ -49,7 +49,7 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
                 </p>
               </Link>
             </li>
-            <li className="nav-item" hidden={user.role === 'alumni' ? true : false}>
+            <li className="nav-item" hidden={user.role === 'alumni' || user.role === 'mitra'? true : false}>
               <Link href="/admin-pages/admin" className={`nav-link ${isActiveNavItem == 1 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-home" />
                 <p>
@@ -73,7 +73,7 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
                 </p>
               </Link>
             </li>
-            <li className="nav-item" hidden={user.role === 'alumni' ? true : false}>
+            <li className="nav-item" hidden={user.role === 'alumni' || user.role === 'mitra'? true : false}>
               <Link href="/admin-pages/alumni" className={`nav-link ${isActiveNavItem == 4 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-clock" />
                 <p>

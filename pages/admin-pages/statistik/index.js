@@ -24,37 +24,37 @@ export default function Statistik() {
   ];
   function jumlahkanData(data) {
     var total = 0;
-    
+
     for (var i = 0; i < data.length; i++) {
       total += data[i].count;
     }
-    
+
     return total;
   }
-  
+
   var hasilJumlah = jumlahkanData(data);
-  
-  const [counter, setCounter] = useState({mitras: 0})
+
+  const [counter, setCounter] = useState({ mitras: 0 });
   const handleCount = () => {
-    fetch('/api/countloker', {
-      method: 'GET',
+    fetch("/api/countloker", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data)
-        setCounter(data.data)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setCounter(data.data);
       })
-      .catch(err => {
-       console.log('Error: ', err.message)
-      })
-  }
+      .catch((err) => {
+        console.log("Error: ", err.message);
+      });
+  };
 
   useEffect(() => {
-    handleCount()
-  }, [])
+    handleCount();
+  }, []);
 
   return (
     <Layout
@@ -62,15 +62,19 @@ export default function Statistik() {
       activeNavBarItem={8}
       activeUser={""}
     >
-      <h1>Statistik</h1>
-      <div className="row">
-        <div className="col-md-6">
-          <Chart data={data} />
-        </div>
-        <div className="col-md-6">
-          <ul style={{listStyleType:"square"}}>
-            <li style={{fontSize:"20px"}}>Jumlah Mitra Masuk : {counter.mitras}</li>
-          </ul>
+      <div className="container">
+        <h1>Statistik</h1>
+        <div className="row">
+          <div className="col-md-6">
+            <Chart data={data} />
+          </div>
+          <div className="col-md-6">
+            <ul style={{ listStyleType: "square" }}>
+              <li style={{ fontSize: "20px" }}>
+                Jumlah Mitra Masuk : {counter.mitras}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </Layout>

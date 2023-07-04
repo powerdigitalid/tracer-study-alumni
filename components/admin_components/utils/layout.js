@@ -1,7 +1,6 @@
 import Head from "next/head";
 import Footer from "./footer";
 import Navbar from "./navbar";
-import Scripts from "./scripts";
 import Sidebar from "./sidebar";
 
 export default function Layout({ children, title = '', activeNavBarItem = 0, activeUser = '', role = '' }) {
@@ -20,7 +19,6 @@ export default function Layout({ children, title = '', activeNavBarItem = 0, act
         {children}
       </div>
       <Footer/>
-      <Scripts />
     </div>
   )
 }

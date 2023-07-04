@@ -31,7 +31,11 @@ export default async function handler(req, res) {
             }
           });
       } else {
-        await prisma.loker.findMany({})
+        await prisma.loker.findMany({
+          include:{
+            user: true
+          }
+        })
           .then((loker) => {
             if (loker.length == 0) {
               res.status(200).json({

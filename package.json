@@ -26,6 +26,7 @@
     "recharts": "^2.6.2",
     "sharp": "^0.31.2",
     "sweetalert2": "^11.6.15",
+    "xlsx": "^0.18.5",
     "zustand": "^4.1.5"
   },
   "devDependencies": {

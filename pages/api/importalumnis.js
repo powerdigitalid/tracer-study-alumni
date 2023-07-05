@@ -1,5 +1,9 @@
-// import { prisma } from "../../libs/prisma.lib"
-import { PrismaClient } from "@prisma/client"
+import { prisma } from "../../libs/prisma.lib"
+// import { PrismaClient } from "@prisma/client"
+
+
+// const prisma = new PrismaClient()
+
 
 export default async function handler(req, res) {
   try {
@@ -7,8 +11,8 @@ export default async function handler(req, res) {
       let data = req.body.alumnis.map((alumni) => {
         return {
           nim: alumni.nim,
-          nik: alumni.no_ktp? alumni.no_ktp : '-',
-          npwp: '-',
+          nik: alumni.no_ktp,
+          npwp: alumni.npwp,
           nama: alumni.nama_mhs,
           gender: alumni.kelamin,
           angkatan: alumni.angkatan,
@@ -16,16 +20,15 @@ export default async function handler(req, res) {
           alamat: alumni.alamat,
           telepon: alumni.tlp_saya,
           email: alumni.email,
-          password: alumni.nim
+          password: alumni.password
         }
       })
-      data.pop();
-      const prisma = new PrismaClient()
-      const insert = await prisma.alumnis.createMany({ 
+      // data.pop();
+      const insert = await prisma.alumnis.createMany({
         data: data,
         skipDuplicates: true
       })
-      res.status(201).json({message: 'success', data: insert})
+      res.status(201).json({ message: 'success', data: insert })
     }
   } catch (error) {
     res.status(500).json({

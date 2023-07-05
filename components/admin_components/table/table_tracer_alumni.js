@@ -24,7 +24,11 @@ export default function TableTracerAlumni() {
   };
   const handleShowDataAlumni = (id) => {};
   useEffect(() => {
-    fetchAlumnis();
+    // fetchAlumnis();
+    setTimeout(() => {
+      fetchAlumnis();
+      // setSession(getCookie("user"));
+    }, 1000);
   }, []);
   return (
     <div className="content">

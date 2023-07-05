@@ -149,7 +149,7 @@ export default function Berkas() {
         setSession(session);
         if (session.role === 'admin') { handleGetLoker(null) } else { handleGetLoker(id) };
       }
-    }, 1000);
+    }, 5000);
   }, []);
 
   useEffect(() => {

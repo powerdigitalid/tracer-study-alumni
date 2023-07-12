@@ -37,6 +37,12 @@ const Chart = () => {
     { type: 'Belum Mengisi', count: alumniData.untracered, fill: '#ff0000' },
   ];
 
+  const chartStatus = [
+    { type: 'Jumlah Seluruh Alumni', count: alumniData.alumnis, fill: '#8884d8' },
+    { type: 'Sudah Bekerja', count: alumniData.tracered, fill: '#e36639' },
+    { type: 'Belum Bekerja', count: alumniData.untracered, fill: '#393ce3' },
+  ];
+
   const filteredChartData = chartData.filter((data) => data.count !== null);
 
   const yearFormatter = (value) => {
@@ -44,6 +50,8 @@ const Chart = () => {
   };
 
   return (
+    <>
+    <div className='row'>
     <div style={{ display: 'flex' }}>
       {/* Chart Kiri */}
       <div style={{ flex: 1 }}>
@@ -69,6 +77,25 @@ const Chart = () => {
         </BarChart>
       </div>
     </div>
+    </div>
+    <div className='row mt-5'>
+    <div style={{ display: 'flex' }}>
+      {/* Chart Kiri */}
+      <div style={{ flex: 1 }}>
+      <BarChart width={500} height={300} data={chartStatus}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="type" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="count" fill="#8884d8" name="Status Alumni" />
+        </BarChart>
+      </div>
+
+      {/* Chart Kanan */}
+    </div>
+    </div>
+    </>
   );
 };
 

@@ -45,6 +45,18 @@ export default async function handler(req, res) {
             lulus: '2022'
           }
         }),
+        bekerja : await prisma.answers.count({
+          where: {
+            answer: 'YA' ,
+            question_code: 'Q3'
+          }
+        }),
+        tidakBekerja : await prisma.answers.count({
+          where: {
+            answer: '' ,
+            question_code: 'Q3'
+          }
+        }),
       }
       res.status(200).json({
         message: 'available',

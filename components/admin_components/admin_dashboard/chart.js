@@ -39,8 +39,8 @@ const Chart = () => {
 
   const chartStatus = [
     { type: 'Jumlah Seluruh Alumni', count: alumniData.alumnis, fill: '#8884d8' },
-    { type: 'Sudah Bekerja', count: alumniData.tracered, fill: '#e36639' },
-    { type: 'Belum Bekerja', count: alumniData.untracered, fill: '#393ce3' },
+    { type: 'Sudah Bekerja', count: alumniData.bekerja, fill: '#008000' },
+    { type: 'Belum Bekerja', count: alumniData.tidakBekerja, fill: '#393ce3' },
   ];
 
   const filteredChartData = chartData.filter((data) => data.count !== null);

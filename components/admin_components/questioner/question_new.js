@@ -11,6 +11,7 @@ export class QuestionNew extends Component {
       jawaban4: '',
       jawaban5: '',
       jawaban6: 0,
+      jawaban7: '',
       ansQ1: true,
       ansQ2: true,
       alumni: {},
@@ -43,6 +44,7 @@ export class QuestionNew extends Component {
     this.setState({ jawaban4: '' })
     this.setState({ jawaban5: '' })
     this.setState({ jawaban6: '' })
+    this.setState({ jawaban7: '' })
     fetch(`/api/answer/${id}`, {
       method: 'GET',
       headers: {
@@ -79,6 +81,10 @@ export class QuestionNew extends Component {
                 this.setState({ jawaban6: jwb.answer })
                 break;
 
+              case 'Q7':
+                this.setState({ jawaban7: jwb.answer })
+                break;
+  
               default:
                 break;
             }
@@ -87,7 +93,7 @@ export class QuestionNew extends Component {
       })
   }
   handlePostAnswer() {
-    if (this.state.jawaban1 === '' && this.state.jawaban2 === '' && this.state.jawaban3 === '' && this.state.jawaban4 === '' && this.state.jawaban5 === '' && this.state.jawaban6 === '') {
+    if (this.state.jawaban1 === '' && this.state.jawaban2 === '' && this.state.jawaban3 === '' && this.state.jawaban4 === '' && this.state.jawaban5 === '' && this.state.jawaban6 === '' && this.state.jawaban7 === '') {
       Swal.fire('Gagal', 'Anda belum menjawab semua kuisioner yang tersedia!', 'error');
     } else {
       let answers = [
@@ -120,6 +126,11 @@ export class QuestionNew extends Component {
           answer: jawaban6,
           alumniId: alumni.id,
           question_code: 'Q6'
+        },
+        {
+          answer: jawaban7,
+          alumniId: alumni.id,
+          question_code: 'Q7'
         },
       ]
       fetch(`/api/answer/${idAlumni}`, {
@@ -363,6 +374,14 @@ export class QuestionNew extends Component {
                         <td className="w-50">
                           Rp.
                           <input type="number" className="form-control col-8 form-control-sm d-inline" value={this.state.jawaban6} onChange={(e) => this.setState({ jawaban6: e.target.value })} disabled/>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className=""></td>
+                        <td className="w-50">Jabatan / Bidang Pekerjaan</td>
+                        <td className="">:</td>
+                        <td className="w-50">
+                          <input type="text" className="form-control col-8 form-control-sm d-inline" value={this.state.jawaban7} onChange={(e) => this.setState({ jawaban7: e.target.value })} disabled/>
                         </td>
                       </tr>
                       {/* <tr>

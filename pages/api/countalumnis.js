@@ -1,4 +1,4 @@
-import { prisma } from "../../libs/prisma.lib"
+import { prisma } from "../../libs/prisma.lib";
 
 export default async function handler(req, res) {
   if (req.method === 'GET') {
@@ -57,15 +57,28 @@ export default async function handler(req, res) {
             question_code: 'Q3'
           }
         }),
+        rataTunggu : await prisma.answers.count({
+          where: {
+            question_code: 'Q1',
+            answer: 'sesudah'
+          }
+        }),
       }
+
+      const jumlahAlumni = datacount.alumnis;
+      const rataTunggu = datacount.rataTunggu;
+      const rataTungguRataRata = jumlahAlumni > 0 ? rataTunggu / jumlahAlumni : 0;
+
+      datacount.rataTungguRataRata = rataTungguRataRata;
+
       res.status(200).json({
         message: 'available',
         data: datacount
-      })
+      });
     } catch (error) {
       res.status(500).json({
         message: error.message
-      })
+      });
     }
   }
 }

@@ -28,7 +28,8 @@ export default function Question({ nim }) {
   const [jawaban4, setJawaban4] = useState('')
   const [jawaban5, setJawaban5] = useState('')
   const [jawaban6, setJawaban6] = useState('')
-  const [ansQ1, setAnsQ1] = useState(true)
+  const [jawaban7, setJawaban7] = useState('')
+  const [ansQ1, setAnsQ1] = useState(false)
   const [ansQ2, setAnsQ2] = useState(true)
 
   const handleGetAlumni = () => {
@@ -65,6 +66,7 @@ export default function Question({ nim }) {
         setJawaban4(ans[3].answer)
         setJawaban5(ans[4].answer)
         setJawaban6(ans[5].answer)
+        setJawaban7(ans[6].answer)
       })
       .catch(err => {
         Swal.fire('Gagal', 'Gagal memuat jawaban!', 'error');
@@ -73,7 +75,7 @@ export default function Question({ nim }) {
   }
 
   const handlePostAnswer = () => {
-    if (jawaban1 === '' && jawaban2 === '' && jawaban3 === '' && jawaban4 === '' && jawaban5 === '' && jawaban6 === '') {
+    if (jawaban1 === '' && jawaban2 === '' && jawaban3 === '' && jawaban4 === '' && jawaban5 === '' && jawaban6 === '' && jawaban7 === '') {
       Swal.fire('Gagal', 'Anda belum menjawab semua kuisioner yang tersedia!', 'error');
     } else {
       let answers = {
@@ -107,6 +109,11 @@ export default function Question({ nim }) {
             answer: jawaban6,
             alumniId: alumni.id,
             question_code: 'Q6'
+          },
+          {
+            answer: jawaban7,
+            alumniId: alumni.id,
+            question_code: 'Q7'
           },
         ]
       }
@@ -224,14 +231,14 @@ export default function Question({ nim }) {
                               <input className="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio1" onChange={() => setAnsQ1(!ansQ1)} />
                               <label className="form-check-label mr-1" htmlFor="inlineRadio1">Kira-kira</label>
                             </div>
-                            <input type="number" className="form-control form-control-sm col-4 d-inline mr-1" placeholder="bulan" value={jawaban1.split(';')[1] == 'sebelum' ? parseInt(jawaban1.split(';')[0]) : 0} onChange={(e) => setJawaban1(e.target.value + ';sebelum')} disabled={ansQ1} />
+                            <input type="number" className="form-control form-control-sm col-4 d-inline mr-1" placeholder="bulan" value={jawaban1.split(';')[1] == 'sebelum' ? parseInt(jawaban1.split(';')[0]) : 0} onChange={(e) => setJawaban1(e.target.value + ';sebelum')} disabled={!ansQ1} />
                             bulan sebelum lulus ujian
                             <br />
                             <div className="form-check form-check-inline">
-                              <input className="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio2" onChange={() => setAnsQ1(!ansQ1)} />
+                              <input className="form-check-input" type="radio" name="inlineRadioOptions1" id="inlineRadio2" onChange={() => setAnsQ1(!ansQ2)} />
                               <label className="form-check-label mr-1" htmlFor="inlineRadio2">Kira-kira</label>
                             </div>
-                            <input type="number" className="form-control form-control-sm col-4 d-inline mr-1" placeholder="bulan" value={jawaban1.split(';')[1] == 'sesudah' ? parseInt(jawaban1.split(';')[0]) : 0} onChange={(e) => setJawaban1(e.target.value + ';sesudah')} disabled={!ansQ1} />
+                            <input type="number" className="form-control form-control-sm col-4 d-inline mr-1" placeholder="bulan" value={jawaban1.split(';')[1] == 'sesudah' ? parseInt(jawaban1.split(';')[0]) : 0} onChange={(e) => setJawaban1(e.target.value + ';sesudah')} disabled={ansQ1} />
                             bulan sesudah lulus ujian
                           </td>
                         </tr>
@@ -360,6 +367,14 @@ export default function Question({ nim }) {
                           <td className="w-50">
                             Rp.
                             <input type="number" className="form-control col-8 form-control-sm d-inline" value={jawaban6} onChange={(e) => setJawaban6(e.target.value)} />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td className=""></td>
+                          <td className="w-50">Jabatan / Bidang Pekerjaan</td>
+                          <td className="">:</td>
+                          <td className="w-50">
+                            <input type="text" className="form-control col-8 form-control-sm d-inline" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)} />
                           </td>
                         </tr>
                       </>

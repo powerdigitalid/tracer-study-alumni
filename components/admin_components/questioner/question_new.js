@@ -307,7 +307,7 @@ export class QuestionNew extends Component {
                             <label className="form-check-label mr-1" htmlFor="inlineRadio11">Tidak</label>
                           </div>
                           <br />
-                          <input type="text" className="form-control form-control-sm " placeholder="Pekerjaan" value={this.state.jawaban3 !== 'YA' ? this.state.jawaban2 : ''} onChange={(e) => this.setState({ jawaban3: e.target.value })} />
+                          <input type="text" className="form-control form-control-sm " placeholder="Pekerjaan" value={this.state.jawaban3 !== 'YA' ? this.state.jawaban3 : ''} onChange={(e) => this.setState({ jawaban3: e.target.value })} disabled/>
                         </td>
                       </tr>
                       <tr>

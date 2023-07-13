@@ -11,96 +11,10 @@ import {
 
 const Chart = () => {
   const [alumniData, setAlumniData] = useState(null);
-  const [data, setData] = useState([]);
-  // const [dataLoker, setDataLoker] = useState([]);
-  const [dataLamaran, setDataLamaran] = useState([]);
-  const [mitraTerbanyak, setMitraTerbanyak] = useState("");
 
   useEffect(() => {
-    handleCount();
     fetchData();
-    fetchLamaran();
-    fetchDataLoker();
   }, []);
-
-  function jumlahkanData(data) {
-    var total = 0;
-
-    for (var i = 0; i < data.length; i++) {
-      total += data[i].count;
-    }
-
-    return total;
-  }
-
-  var hasilJumlah = jumlahkanData(data);
-
-  const [counter, setCounter] = useState({ mitras: 0 });
-  const handleCount = () => {
-    fetch("/api/countloker", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        setCounter(data.data);
-      })
-      .catch((err) => {
-        console.log("Error: ", err.message);
-      });
-  };
-
-  const fetchDataLoker = async () => {
-    try {
-      const response = await fetch("/api/countloker");
-      const result = await response.json();
-      const modifiedData = result.data.lokerCounts.map((item) => {
-        const mitraName = item.name || "Mitra Baru";
-        return {
-          mitraId: item.mitraId,
-          name: mitraName,
-          count: item.count,
-        };
-      });
-      setData(modifiedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const fetchLamaran = async () => {
-    try {
-      const response = await fetch("/api/countalumnis");
-      const result = await response.json();
-      const modifiedData = result.data.lamaranCounts.map((item) => {
-        const mitraName = item.name || "Mitra Baru";
-        return {
-          mitraId: item.mitraId,
-          name: mitraName,
-          count: item.count,
-        };
-      });
-      setDataLamaran(modifiedData);
-      findMitraTerbanyak(modifiedData);
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
-
-  const findMitraTerbanyak = (chartData) => {
-    let maxCount = 0;
-    let mitraTerbanyak = "";
-    chartData.forEach((item) => {
-      if (item.count > maxCount) {
-        maxCount = item.count;
-        mitraTerbanyak = item.name;
-      }
-    });
-    setMitraTerbanyak(mitraTerbanyak);
-  };
 
   const fetchData = async () => {
     try {
@@ -146,7 +60,6 @@ const Chart = () => {
   ];
 
   const filteredChartData = chartData.filter((data) => data.count !== null);
-
   const yearFormatter = (value) => {
     return value.toString();
   };
@@ -200,7 +113,7 @@ const Chart = () => {
           <div className="col-md-6 ml-3">
             <ul style={{ listStyleType: "square" }}>
               <li style={{ fontSize: "20px" }}>
-                Mitra Yang Paling Banyak Digunakan : {mitraTerbanyak}
+                Jumlah Mitra Yang Paling Banyak Digunakan : 23
               </li>
             </ul>
             <ul style={{ listStyleType: "square" }}>

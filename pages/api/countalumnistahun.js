@@ -56,20 +56,39 @@ export default async function handler(req, res) {
             answer: '' ,
             question_code: 'Q3'
           }
-        }),
-        rataTunggu : await prisma.answers.count({
-          where: {
-            question_code: 'Q1',
-            answer: 'sesudah'
-          }
-        }),
+        })
       }
+      const rataTunggu = await prisma.answers.findMany({
+        where: {
+          question_code: 'Q1',
+          answer: {
+            contains: 'sesudah'
+          }
+        }
+      });
 
+      let total = 0;
+      let count = 0;
+
+      for (let i = 0; i < rataTunggu.length; i++) {
+        const answer = rataTunggu[i].answer;
+        const index = answer.indexOf('sesudah');
+        
+        if (index !== -1) {
+          const numbers = answer.substring(0, index).split(';');
+          for (let j = 0; j < numbers.length; j++) {
+            const number = parseInt(numbers[j]);
+            if (!isNaN(number)) {
+              total += number;
+              count++;
+            }
+          }
+        }
+      }
       const jumlahAlumni = datacount.alumnis;
-      const rataTunggu = datacount.rataTunggu;
-      const rataTungguRataRata = jumlahAlumni > 0 ? rataTunggu / jumlahAlumni : 0;
-
+      const rataTungguRataRata = count > 0 ? total / count : 0 / jumlahAlumni;
       datacount.rataTungguRataRata = rataTungguRataRata;
+
 
       res.status(200).json({
         message: 'available',
@@ -78,7 +97,7 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).json({
         message: error.message
-      });
-    }
-  }
+      });
+    }
+  }
 }

@@ -11,7 +11,14 @@ export default async function handler(req, res) {
             lokerId: lokerIdInt
           },
           select: {
-            berkas: true
+            berkas: true,
+            mitraId: true,
+            alumnis: {
+              select: {
+                nama: true,
+                nim: true
+              }
+            }
           }
         })
         .then((lamaran) => {
@@ -28,7 +35,19 @@ export default async function handler(req, res) {
           }
         });
       } else {
-        await prisma.lamaran.findMany({})
+        await prisma.lamaran.findMany({
+          select: {
+            berkas: true,
+            lokerId: true,
+            mitraId: true,
+            alumnis: {
+              select: {
+                nama: true,
+                nim: true
+              }
+            }
+          }
+        })
           .then((lamaran) => {
             if (lamaran.length == 0) {
               res.status(200).json({

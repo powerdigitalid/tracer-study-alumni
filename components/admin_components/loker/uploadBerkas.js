@@ -35,6 +35,7 @@ export default function UploadBerkas() {
       formData.append('berkas', berkas);
       formData.append('lokerId', data.id);
       formData.append('alumnisId', session.id);
+      formData.append('mitraId', data.mitraId);
       const res = await fetch('/api/lamaran/create', {
         method: 'POST',
         body: formData,

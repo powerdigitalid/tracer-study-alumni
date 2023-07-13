@@ -11,9 +11,13 @@ import {
 
 const Chart = () => {
   const [alumniData, setAlumniData] = useState(null);
+  const [mitraTerbanyak, setMitraTerbanyak] = useState('');
+  console.log(mitraTerbanyak)
+
 
   useEffect(() => {
     fetchData();
+    fetchLamaran();
   }, []);
 
   const fetchData = async () => {
@@ -24,6 +28,37 @@ const Chart = () => {
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const fetchLamaran = async () => {
+    try {
+      const response = await fetch('/api/countalumnis');
+      const result = await response.json();
+      const modifiedData = result.data.lamaranCounts.map((item) => {
+        const mitraName = item.name || 'Mitra Baru';
+        return {
+          mitraId: item.mitraId,
+          name: mitraName,
+          count: item.count,
+        };
+      });
+      // setDataLamaran(modifiedData);
+      findMitraTerbanyak(modifiedData);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const findMitraTerbanyak = (chartData) => {
+    let maxCount = 0;
+    let mitraTerbanyak = '';
+    chartData.forEach((item) => {
+      if (item.count > maxCount) {
+        maxCount = item.count;
+        mitraTerbanyak = item.name;
+      }
+    });
+    setMitraTerbanyak(mitraTerbanyak);
   };
 
   if (!alumniData) {
@@ -113,7 +148,7 @@ const Chart = () => {
           <div className="col-md-6 ml-3">
             <ul style={{ listStyleType: "square" }}>
               <li style={{ fontSize: "20px" }}>
-                Jumlah Mitra Yang Paling Banyak Digunakan : 23
+                Jumlah Mitra Yang Paling Banyak Digunakan : {mitraTerbanyak}
               </li>
             </ul>
             <ul style={{ listStyleType: "square" }}>

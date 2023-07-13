@@ -9,12 +9,16 @@ export default async function handler(req, res) {
         },
       });
 
+      // console.log(mitraCount)
+
       const lamaranCounts = await prisma.lamaran.groupBy({
         by: ['mitraId'],
         _count: {
           _all: true,
         },
       });
+
+      console.log(lamaranCounts)
 
       const lamaranIds = lamaranCounts.map((count) => count.mitraId);
 

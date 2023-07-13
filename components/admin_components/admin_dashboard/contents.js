@@ -5,7 +5,7 @@ import SmallCard from "../utils/card-small";
 export default function AdminDashboardContent() {
   const [counter, setCounter] = useState({alumnis: 0, tracered: 0, untracered: 0, alumnis19: 0, alumnis20: 0, alumnis21: 0, alumnis22: 0})
   const handleCount = () => {
-    fetch('/api/countalumnis', {
+    fetch('/api/countalumnistahun', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'

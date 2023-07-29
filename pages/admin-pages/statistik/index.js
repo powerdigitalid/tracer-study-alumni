@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { getCookie } from "../../../libs/cookies.lib";
 import { useEffect, useState } from "react";
 import Chart from "../../../components/admin_components/statistik/chart";
+// import Chart from "../../../components/admin_components/admin_dashboard/chart";
+
 
 export default function Statistik() {
   const router = useRouter();

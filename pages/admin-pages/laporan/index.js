@@ -7,7 +7,7 @@ import Layout from "../../../components/admin_components/utils/layout";
 import { getCookie } from "../../../libs/cookies.lib";
 import useLoginStore from "../../../store/store";
 
-export default function AdminHome() {
+export default function Laporan() {
   const router = useRouter();
   useEffect(() => {
     const session = getCookie("user");
@@ -16,23 +16,22 @@ export default function AdminHome() {
     }
   }, []);
 
-  // const data = [
-  //   { year: 2018, count: 150 },
-  //   { year: 2019, count: 180 },
-  //   { year: 2020, count: 200 },
-  //   { year: 2021, count: 220 },
-  //   { year: 2022, count: 100 },
-  // ];
+  const data = [
+    { year: 2018, count: 150 },
+    { year: 2019, count: 180 },
+    { year: 2020, count: 200 },
+    { year: 2021, count: 220 },
+    { year: 2022, count: 100 },
+  ];
 
   return (
-    <Layout title="Admin - Tracer Study" activeNavBarItem={1} activeUser={""}>
+    <Layout title="Admin - Tracer Study" activeNavBarItem={9} activeUser={""}>
       <ContentHeader title={"Dashboard"} />
-      <AdminDashboardContent />
-      {/* <div className="row">
+      <div className="row">
         <div className="col-md-6">
           <Chart data={data} />
         </div>
-      </div> */}
+      </div>
     </Layout>
   );
 }

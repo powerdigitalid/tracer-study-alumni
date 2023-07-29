@@ -11,12 +11,14 @@ import {
 
 const Chart = () => {
   const [alumniData, setAlumniData] = useState(null);
+  const [optionData, setOptionData] = useState([]);
   const [mitraTerbanyak, setMitraTerbanyak] = useState('');
-  console.log(mitraTerbanyak)
+  // console.log(optionData)
 
 
   useEffect(() => {
     fetchData();
+    fetchOptions();
     fetchLamaran();
   }, []);
 
@@ -29,6 +31,16 @@ const Chart = () => {
       console.error("Error fetching data:", error);
     }
   };
+
+  const fetchOptions = async () => {
+    try {
+      const response = await fetch("/api/countoptions");
+      const data = await response.json();
+      setOptionData(data.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  }
 
   const fetchLamaran = async () => {
     try {
@@ -72,6 +84,14 @@ const Chart = () => {
     { year: "2020", count: alumniData.alumnis20 },
     { year: "2021", count: alumniData.alumnis21 },
     { year: "2022", count: alumniData.alumnis22 },
+  ];
+
+  const optionsData = [
+    {type: "Software Enginer", count: optionData.softwareenginer},
+    {type: "Web Designer", count: optionData.webdesigner},
+    {type: "Data Analyst", count: optionData.dataanalyst},
+    {type: "Backend Developer", count: optionData.backenddeveloper},
+    {type: "Frontend Developer", count: optionData.frontenddeveloper},
   ];
 
   const chartDataMengisi = [
@@ -157,9 +177,20 @@ const Chart = () => {
               </li>
             </ul>
           </div>
-
           {/* Chart Kanan */}
         </div>
+      </div>
+      <div className="row mt-5">
+      <div style={{ flex: 1 }}>
+            <BarChart width={800} height={300} data={optionsData}>
+              <CartesianGrid strokeDasharray="2 2" />
+              <XAxis dataKey="type" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="count" fill="#8884d8" name="Status Alumni" />
+            </BarChart>
+          </div>
       </div>
     </>
   );

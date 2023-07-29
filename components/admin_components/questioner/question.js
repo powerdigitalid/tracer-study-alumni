@@ -128,6 +128,7 @@ export default function Question({ nim }) {
         .then(data => {
           if (data.message == 'success') {
             Swal.fire('Berhasil', 'Kuisioner berhasil diisi!', 'success');
+            handleGetAlumni()
           } else {
             Swal.fire('Gagal', 'Kuisioner gagal diisi!', 'error');
           }
@@ -139,7 +140,10 @@ export default function Question({ nim }) {
   }
 
   useEffect(() => {
-    handleGetAlumni()
+    setTimeout(() => {
+      handleGetAlumni()
+      // console.log(alumni)
+    }, 2000)
     if (alumni.tracered === "true") {
       handleGetAnswer()
     }
@@ -371,10 +375,22 @@ export default function Question({ nim }) {
                         </tr>
                         <tr>
                           <td className=""></td>
-                          <td className="w-50">Jabatan / Bidang Pekerjaan</td>
+                          <td className="w-50">Bidang Pekerjaan</td>
                           <td className="">:</td>
-                          <td className="w-50">
-                            <input type="text" className="form-control col-8 form-control-sm d-inline" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)} />
+                          <td className="w-50 dropdown">
+                            {/* <input type="text" className="form-control col-8 form-control-sm d-inline" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)} /> */}
+                            <div className="form-group">
+                              <label htmlFor="exampleFormControlSelect1">Example select</label>
+                              <select className="form-control" id="exampleFormControlSelect1" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)}>
+                                <option value="Software Enginer">Software Enginer</option>
+                                <option value="Web Designer">Web Designer</option>
+                                <option value="Data Analyst">Data Analyst</option>
+                                <option value="Backend Developer">Backend Developer</option>
+                                <option value="Frontend Developer">Frontend Developer</option>
+                              </select>
+                            </div>
+
+
                           </td>
                         </tr>
                       </>

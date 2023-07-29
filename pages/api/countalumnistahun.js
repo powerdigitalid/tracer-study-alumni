@@ -45,18 +45,48 @@ export default async function handler(req, res) {
             lulus: '2022'
           }
         }),
-        bekerja : await prisma.answers.count({
+        bekerja: await prisma.answers.count({
           where: {
-            answer: 'YA' ,
+            answer: 'YA',
             question_code: 'Q3'
           }
         }),
-        tidakBekerja : await prisma.answers.count({
+        tidakBekerja: await prisma.answers.count({
           where: {
-            answer: '' ,
+            answer: '',
             question_code: 'Q3'
           }
-        })
+        }),
+        // softwareenginer: await prisma.answers.count({
+        //   where: {
+        //     // answer: 'Software Enginer',
+        //     question_code: 'Q7'
+        //   }
+        // }),
+        // webdesigner: await prisma.answers.count({
+        //   where: {
+        //     // answer: 'Web Designer',
+        //     question_code: 'Q7'
+        //   }
+        // }),
+        // dataanalyst: await prisma.answers.count({
+        //   where: {
+        //     // answer: 'Data Analyst',
+        //     question_code: 'Q7'
+        //   }
+        // }),
+        // backenddeveloper: await prisma.answers.count({
+        //   // answer: 'Backend Developer',
+        //   question_code: 'Q7'
+        // }),
+        // frontenddeveloper: await prisma.answers.count({
+        //   // answer: 'Frontend Developer',
+        //   question_code: 'Q7'
+        // }),
+        // notselected: await prisma.answers.count({
+        //   answer: '',
+        //   question_code: 'Q7'
+        // })
       }
       const rataTunggu = await prisma.answers.findMany({
         where: {
@@ -73,7 +103,7 @@ export default async function handler(req, res) {
       for (let i = 0; i < rataTunggu.length; i++) {
         const answer = rataTunggu[i].answer;
         const index = answer.indexOf('sesudah');
-        
+
         if (index !== -1) {
           const numbers = answer.substring(0, index).split(';');
           for (let j = 0; j < numbers.length; j++) {
@@ -97,7 +127,7 @@ export default async function handler(req, res) {
     } catch (error) {
       res.status(500).json({
         message: error.message
-      });
-    }
-  }
+      });
+    }
+  }
 }

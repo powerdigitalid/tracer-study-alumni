@@ -58,6 +58,14 @@ export default function Sidebar({ isActiveNavItem = 0, activeUser = '' }) {
               </Link>
             </li>
             <li className="nav-item" hidden={user.role === 'admin' ? false : true}>
+              <Link href={`/admin-pages/laporan`} className={`nav-link ${isActiveNavItem == 9 ? ' active' : ''}`}>
+                <i className="nav-icon fas fa-clipboard-list" />
+                <p>
+                  Report
+                </p>
+              </Link>
+            </li>
+            <li className="nav-item" hidden={user.role === 'admin' ? false : true}>
               <Link href="/admin-pages/tambah-user-admin" className={`nav-link ${isActiveNavItem == 2 ? ' active' : ''}`}>
                 <i className="nav-icon fas fa-users-cog" />
                 <p>

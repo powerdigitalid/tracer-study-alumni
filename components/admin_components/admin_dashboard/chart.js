@@ -188,7 +188,7 @@ const Chart = () => {
               <YAxis />
               <Tooltip />
               <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Status Alumni" />
+              <Bar dataKey="count" fill="#8884d8" name="Bidang Kegiatan" />
             </BarChart>
           </div>
       </div>

@@ -304,7 +304,16 @@ export default function Question({ nim }) {
                               <label className="form-check-label mr-1" htmlFor="inlineRadio11">Tidak</label>
                             </div>
                             <br />
-                            <input type="text" className="form-control form-control-sm " placeholder="Pekerjaan" onChange={(e) => setJawaban3(e.target.value)} />
+                            <div className="form-group">
+                              {/* <label htmlFor="exampleFormControlSelect1">Example select</label> */}
+                              <select className="form-control" id="exampleFormControlSelect1" value={jawaban3} onChange={(e) => setJawaban3(e.target.value)}>
+                                <option selected>Pekerjaan</option>
+                                <option value="Shopee">Shopee</option>
+                                <option value="Aqua">Aqua</option>
+                                <option value="Adira">Adira</option>
+                                <option value="Kominfo">Kominfo</option>
+                              </select>
+                            </div>
                           </td>
                         </tr>
                         <tr>
@@ -378,10 +387,9 @@ export default function Question({ nim }) {
                           <td className="w-50">Bidang Pekerjaan</td>
                           <td className="">:</td>
                           <td className="w-50 dropdown">
-                            {/* <input type="text" className="form-control col-8 form-control-sm d-inline" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)} /> */}
                             <div className="form-group">
-                              <label htmlFor="exampleFormControlSelect1">Example select</label>
                               <select className="form-control" id="exampleFormControlSelect1" value={jawaban7} onChange={(e) => setJawaban7(e.target.value)}>
+                                <option selected>Bidang Pekerjaan</option>
                                 <option value="Software Enginer">Software Enginer</option>
                                 <option value="Web Designer">Web Designer</option>
                                 <option value="Data Analyst">Data Analyst</option>
@@ -389,8 +397,6 @@ export default function Question({ nim }) {
                                 <option value="Frontend Developer">Frontend Developer</option>
                               </select>
                             </div>
-
-
                           </td>
                         </tr>
                       </>

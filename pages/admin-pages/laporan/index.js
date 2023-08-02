@@ -6,6 +6,7 @@ import ContentHeader from "../../../components/admin_components/utils/content-he
 import Layout from "../../../components/admin_components/utils/layout";
 import { getCookie } from "../../../libs/cookies.lib";
 import useLoginStore from "../../../store/store";
+import ButtonReport from "../../../components/admin_components/laporan/buttonreport";
 
 export default function Laporan() {
   const router = useRouter();
@@ -26,9 +27,10 @@ export default function Laporan() {
 
   return (
     <Layout title="Admin - Tracer Study" activeNavBarItem={9} activeUser={""}>
-      <ContentHeader title={"Dashboard"} />
-      <div className="row">
-        <div className="col-md-6">
+      <ContentHeader title={"Report"} />
+      {/* <ButtonReport /> */}
+      <div className="d-flex">
+        <div className="w-100">
           <Chart data={data} />
         </div>
       </div>

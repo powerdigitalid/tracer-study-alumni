@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Button from "../utils/button";
 import {
   BarChart,
   Bar,
@@ -13,6 +14,10 @@ const Chart = () => {
   const [alumniData, setAlumniData] = useState(null);
   const [optionData, setOptionData] = useState([]);
   const [mitraTerbanyak, setMitraTerbanyak] = useState('');
+  const [activePekerjaan, setActivePekerjaan] = useState(false);
+  const [activeBidang, setActiveBidang] = useState(false);
+  const [activeHeading, setActiveHeading] = useState(false);
+
   // console.log(optionData)
 
 
@@ -61,6 +66,24 @@ const Chart = () => {
     }
   };
 
+  const changeStatPekerjaan = () => {
+    setActiveBidang(false);
+    setActivePekerjaan(true);
+    setActiveHeading(false)
+  };
+
+  const changeStatBidang = () => {
+    setActiveBidang(true);
+    setActivePekerjaan(false);
+    setActiveHeading(false);
+  };
+
+  const changeActiveHeading = () => {
+    setActiveBidang(false);
+    setActivePekerjaan(false);
+    setActiveHeading(true);
+  }
+
   const findMitraTerbanyak = (chartData) => {
     let maxCount = 0;
     let mitraTerbanyak = '';
@@ -87,12 +110,23 @@ const Chart = () => {
   ];
 
   const optionsData = [
-    {type: "Software Enginer", count: optionData.softwareenginer},
-    {type: "Web Designer", count: optionData.webdesigner},
-    {type: "Data Analyst", count: optionData.dataanalyst},
-    {type: "Backend Developer", count: optionData.backenddeveloper},
-    {type: "Frontend Developer", count: optionData.frontenddeveloper},
+    { type: "Software Enginer", count: optionData.option1 },
+    { type: "Web Designer", count: optionData.option2 },
+    { type: "Data Analyst", count: optionData.option3 },
+    { type: "Backend Developer", count: optionData.option4 },
+    { type: "Frontend Developer", count: optionData.option5 },
   ];
+
+  const sortedBidang = optionsData.sort((a, b) => b.count - a.count);
+
+  const optionsPekerjaan = [
+    { type: "Shopee", count: optionData.options1 },
+    { type: "Aqua", count: optionData.options2 },
+    { type: "Adira", count: optionData.options3 },
+    { type: "Kominfo", count: optionData.options4 },
+  ];
+
+  const sortedPekerjaan = optionsPekerjaan.sort((a, b) => b.count - a.count);
 
   const chartDataMengisi = [
     {
@@ -118,9 +152,62 @@ const Chart = () => {
   const yearFormatter = (value) => {
     return value.toString();
   };
-
+  
   return (
     <>
+      <div className="container-fluid">
+        <div className="d-flex flex-row justify-content-around">
+          <div className="">
+            <Button title={'Statistik Pekerjaan'} caption={'Statistik Pekerjaan'} icon={'ion-android-people'} background={'bg-success'} state={changeStatPekerjaan} />
+          </div>
+          <div className="">
+            <Button title={'Rata-rata Waktu Tunggu'} caption={'Rata-rata Waktu Tunggu'} icon={'ion-android-people'} background={'bg-info'} state={changeActiveHeading} />
+          </div>
+          <div className="">
+            <Button title={'Statistik Bidang Pekerjaan'} caption={'Statistik Bidang Pekerjaan'} icon={'ion-android-people'} background={'bg-primary'} state={changeStatBidang} />
+          </div>
+        </div>
+      </div>
+    {activeBidang === true ?
+      <div className="row mb-20 card pt-10">
+        <div style={{ flex: 1 }}>
+          <BarChart width={800} height={300} data={sortedBidang}>
+            <CartesianGrid strokeDasharray="2 2" />
+            <XAxis dataKey="type" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#8884d8" name="Bidang Terbanyak" />
+          </BarChart>
+        </div>
+      </div> :
+      ""
+    }
+    {activePekerjaan === true ?
+      <div className="row card pt-10">
+        <div style={{ flex: 1 }}>
+          <BarChart width={800} height={300} data={sortedPekerjaan}>
+            <CartesianGrid strokeDasharray="2 2" />
+            <XAxis dataKey="type" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="count" fill="#8884d8" name="Perusahaan Terbanyak" />
+          </BarChart>
+        </div>
+      </div> :
+      ""
+    }
+    {activeHeading === true ?
+    <div className="container-fluid mb-30 card">
+      <div className="d-flex h-10">
+        <span style={{ fontSize: "30px" }}>
+          Rata Rata Waktu Tunggu Alumni Bekerja Setelah Lulus : {alumniData.rataTungguRataRata} Bulan
+        </span>
+      </div>
+    </div> :
+      ""
+    }
       <div className="row">
         <div style={{ display: "flex" }}>
           {/* Chart Kiri */}
@@ -152,7 +239,7 @@ const Chart = () => {
           </div>
         </div>
       </div>
-      <div className="row mt-5">
+      <div className="row mt-5 mb-30">
         <div style={{ display: "flex" }}>
           {/* Chart Kiri */}
           <div style={{ flex: 1 }}>
@@ -166,31 +253,14 @@ const Chart = () => {
             </BarChart>
           </div>
           <div className="col-md-6 ml-3">
-            <ul style={{ listStyleType: "square" }}>
+            {/* <ul style={{ listStyleType: "square" }}>
               <li style={{ fontSize: "20px" }}>
                 Jumlah Mitra Yang Paling Banyak Digunakan : {mitraTerbanyak}
               </li>
-            </ul>
-            <ul style={{ listStyleType: "square" }}>
-              <li style={{ fontSize: "20px" }}>
-                Rata Rata Waktu Tunggu Alumni Bekerja Setelah Lulus : {alumniData.rataTungguRataRata} Bulan
-              </li>
-            </ul>
+            </ul> */}
           </div>
           {/* Chart Kanan */}
         </div>
-      </div>
-      <div className="row mt-5">
-      <div style={{ flex: 1 }}>
-            <BarChart width={800} height={300} data={optionsData}>
-              <CartesianGrid strokeDasharray="2 2" />
-              <XAxis dataKey="type" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="count" fill="#8884d8" name="Status Alumni" />
-            </BarChart>
-          </div>
       </div>
     </>
   );
